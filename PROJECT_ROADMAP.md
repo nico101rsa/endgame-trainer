@@ -2,18 +2,31 @@
 
 ## Next session (Session Handoff)
 
-**State:** Milestones 1–3 done. M1+M2 merged to `main` (PRs #1, #2); M3 (progress + SRS) on branch `claude/endgame-trainer-continue-n1ooa0`. Tests green (29/29 vitest), `npm run validate` clean, build clean, browser-verified (Playwright: lesson-read seeds cards → review queue → summary; clean solve grades Good; Show solution grades Again). The full loop now works: read lesson (principle cards enter the queue due today) → tests self-grade into SM-2 → Home shows Continue card / due count / per-lesson progress bars → `/review` runs the shuffled due queue (cards with 4 Anki buttons, positions via TestRunner) and ends on an again/hard/good/easy summary → `/settings` has export/import/reset.
+**State:** Milestones 1–4 done. M1–M3 merged to `main` (PRs #1–#3); M4 on branch `claude/endgame-trainer-continue-n1ooa0`. 29/29 vitest, `npm run validate` clean (13 lessons, 44 test positions, 117 ids), build clean, Playwright-verified (all 6 tiers on Home with Preview badges, tier-2 solves + wrong-move feedback, scaffold lesson pages, breakthrough sequence). Tier 2 fully authored (5 lessons / 20 tests / 9 demos / 21 cards); Tiers 3–6 each scaffolded with one `scaffold: true` stub lesson (Lucena, breakthrough, rook vs pawn, trade-down) carrying 2 hand-verified tests + demos. Home groups all tiers with progress bars.
 
-**The next step — Milestone 4, Tier 2 authored + Tiers 3–6 scaffolded:**
-1. Author Tier 2 per spec §4 (5 lessons: distant opposition, key squares, king-in-front wins, wrong-colour bishop + rook pawn, two-minors awareness) — same JSON+MD pair format under `/content/tier2/`. Read `CONTENT_GUIDE.md` first; hand-verify every line, `npm run validate` after each file.
-2. Scaffold Tiers 3–6: lesson stubs + ≥2 positions each (spec §9). The loader already globs `/content/*/`, so new tiers appear once files exist.
-3. Home currently renders Tier 1 only (`lessonsForTier(1)`) — generalize to group all tiers with their progress bars (Continue logic already walks all lessons in loader order).
+**The next step — finish Milestone 6 (Supabase sync, spec §11). BLOCKED on Nico:** everything is built and unit-tested; what's missing is a real Supabase project. Provide either a personal access token (`sbp_...`, Supabase dashboard → Account → Access Tokens — lets the assistant create the project, apply `supabase/schema.sql`, and set the keys itself) or create a project manually, run `supabase/schema.sql` in its SQL editor, enable email OTP auth, and put the Project URL + anon key into `.env` (see `.env.example`). Then verify the first magic-link sign-in and a two-device merge live — the engine has only been tested against pure-merge unit tests, never a live backend.
 
-**M3 design decisions (differ from Anki, match spec):**
-- Day-granularity scheduling: an Again-graded item comes due *tomorrow* (interval 1d), not later the same session. The review queue is a snapshot taken at mount.
-- Grading is once per position visit (`gradedRef`): wrong move or Show solution ⇒ Again, hints ⇒ Hard, clean ⇒ Good; Restart doesn't wipe the slate; "Play it again" never re-grades.
-- Learning steps: interval <3d counts as learning — Hard repeats the step, Easy graduates straight to 4d (spec's multiplier formulas apply from 3d up).
-- Lesson "read" = first visit to the Lesson page; seeds that lesson's cards due today (once, ever).
+**M6 scaffolding shipped (same session):**
+- `supabase/schema.sql` (spec §11 verbatim: progress / lesson_reads / games with RLS), `.env.example`.
+- `src/sync/`: `client.ts` (null when unconfigured — the app is a full no-op without env keys), `merge.ts` (pure LWW-per-row merge with union'd lesson reads and soft-delete tombstones; 8 unit tests), `engine.ts` (pull → merge → push, debounced background sync on store events, offline retry via pending flag, tombstone lifecycle), `useSyncAccount.ts`.
+- Progress items and journal games now carry `updatedAt` stamps (optional field — old exports still import).
+- Settings → Account & sync: magic-link sign-in, signed-in address, Sync now, last-synced, queued-writes indicator, or a "not configured" explainer.
+- Journal deletes record tombstones so they propagate instead of resurrecting.
+
+**M7+M8 shipped (same session):** the OTB journal per the addendum — `src/journal/` (types with the no-rating rule encoded, PGN in/out with Elo/engine-tag stripping, localStorage store, draft autosave, suggestion pools, descriptive tallies; 9 unit tests), pages `/journal` (list, filters, W-D-L tallies, JSON/PGN export + JSON import), `/journal/new` + edit (board play-in or PGN paste, smart defaults, autocomplete datalists, post-mortem form, tags, linked lessons with endgame-type word-match suggestions), `/journal/:id` viewer (step-through with per-move notes added inline). Lesson pages show "My games" for linked games. Browser-verified: PGN paste with rating tags stripped, move notes, tallies, smart defaults, draft restore, suggestions ordering.
+
+**M5 shipped (same session):**
+- Deploy: `.github/workflows/deploy.yml` (Pages, auto-enablement) + `ci.yml` (lint/validate/test/build/e2e); `vite base: './'` so one build works at any path; web manifest + SVG icon (Add to Home Screen).
+- Poster piece set (`src/board/theme.tsx`): red vs ink filled glyphs with cream halo, SVG-text so they scale free; board themes parchment/slate/tournament; both selectable in Settings alongside a sound toggle (`src/settings/`, WebAudio blips in `src/sound.ts`, no assets).
+- TestRunner: SAN keyboard entry (spec §7 accessibility), desktop two-column layout (board left, controls right at `md:`), move/wrong/solved sounds.
+- Checked-in e2e: `npm run e2e` (e2e/smoke.mjs, playwright-core against `vite preview`; 14 checks). CI installs Chromium; locally `npx playwright-core install chromium` once or set `PW_CHROMIUM`.
+
+**M4 design decisions:**
+- Tier-2 test positions are anchored to *provable* theory only: the key-square table (pawn ranks 2–4 → two ranks ahead; 5th/6th → directly ahead), the key-square theorem (reach one = win regardless of move), Tier-1-verified fortress/escort patterns, mate/stalemate positions machine-checked with chess.js (rules only — legality/mate/stalemate detection is not an engine).
+- Every wrong-map claim was hand-proven or mechanically confirmed; the validator caught 6 illegal wrong-map entries and 1 illegal demo step during authoring (mostly moves blocked by the player's own pieces — it earns its keep).
+- Two-minors tests are all two-bishop corner mates because knights always have non-losing quiet moves — a rejection-tight knight test can't exist under the "never reject a correct move" rule. B+N/N+N verdicts live in cards + the knights demo.
+- Scaffold lessons carry `scaffold: true` (validator allows 2–8 tests instead of 4–8; Home shows a red Preview badge).
+- Trees may include multiple correct root moves (e.g. rook-pawn corner runs) but only positions with provably-failing alternatives became tests; several designs were discarded when alternates also won/drew.
 
 **Key seams:**
 - `src/progress/srs.ts` (pure SM-2 + ISO date helpers), `store.ts` (pure transforms over the v2 shape + localStorage binding, `PROGRESS_EVENT` for same-tab refresh), `useProgress.ts` (React hook). All pure parts unit-tested in Node.
@@ -34,21 +47,25 @@
 - Custom red/cream pieces still queued for the polish milestone (M5). Settings page exists (M3) but only holds progress data controls; themes/pieces/sound slot in there.
 - oxlint emits two pre-existing `react(refs)` warnings in `TestRunner`'s `squareStyles` memo (reads `gameRef` during render). Harmless with the current remount-per-position design; tidy during M5 if touching that code.
 
-**Awaiting Nico:** nothing — Milestone 4 can start straight away.
+**Awaiting Nico:** Supabase credentials for Milestone 6 (a personal access token `sbp_...`, or a project URL + anon key). Everything else can proceed.
 
 ## Milestones (from spec §9)
 
 1. ~~**Skeleton** — Vite/React/TS, routing, board renders, one hard-coded position playable, engine unit tests.~~ ✅ 2026-08-30
 2. ~~**Content pipeline** — JSON/MD loading, validation script, Tier 1 fully authored.~~ ✅ 2026-08-30 (PR #2)
 3. ~~**Progress + SRS** — localStorage, Anki SM-2, review queue (principle cards + positions), export/import.~~ ✅ 2026-08-30
-4. **Tier 2 authored; Tiers 3–6 scaffolded.**
-5. **Polish + deploy** — mobile pass, custom red/cream pieces, settings, "Show solution" button, GitHub Pages workflow, PWA manifest, Playwright smoke tests.
-6. **Sync** — Supabase magic-link auth, local-first merge (spec §11).
-7. **Journal** — game entry/viewer/list/export (addendum).
-8. **Journal ↔ trainer links.**
+4. ~~**Tier 2 authored; Tiers 3–6 scaffolded.**~~ ✅ 2026-08-30
+5. ~~**Polish + deploy** — mobile pass, custom red/cream pieces, settings, "Show solution" button, GitHub Pages workflow, PWA manifest, Playwright smoke tests.~~ ✅ 2026-08-30
+6. **Sync** — Supabase magic-link auth, local-first merge (spec §11). ◐ code complete 2026-08-30; needs Nico's Supabase project + live verification.
+7. ~~**Journal** — game entry/viewer/list/export (addendum).~~ ✅ 2026-08-30
+8. ~~**Journal ↔ trainer links.**~~ ✅ 2026-08-30
 
 ## History
 
+- **2026-08-30 (late-4)** — Milestone 6 code-complete: full sync engine (schema, pure merge with tests, background push/pull, tombstoned deletes, magic-link account UI). Awaiting a real Supabase project to go live.
+- **2026-08-30 (late-3)** — Milestones 7+8 built: the OTB game journal (entry via board or sanitized PGN paste, viewer with inline per-move notes, filterable list with descriptive tallies, JSON+PGN export, drafts, smart defaults, recall-over-retyping autocomplete) and the journal↔trainer links (linked lessons on games with endgame-type suggestions; "My games" on lessons). Rating tags stripped on import per the addendum's hard rule; caught and fixed a chess.js placeholder-header bug ("????.??.??" dates).
+- **2026-08-30 (late-2)** — Milestone 5 built: GitHub Pages deploy + CI workflows, relative-base build, PWA manifest + icon, poster piece set (red/ink glyphs), three board themes, sound (WebAudio, no assets), settings UI for all of it, SAN keyboard entry, desktop board-left layout, checked-in Playwright smoke suite (14 checks, all green against the production build).
+- **2026-08-30 (late)** — Milestone 4 built: Tier 2 fully authored (distant opposition, key squares, king-in-front verdicts, wrong bishop, two minors — 20 tests, all hand-verified against key-square theory, mates machine-checked for legality with chess.js rules). Tiers 3–6 scaffolded (`scaffold: true` stubs: Lucena bridge, three-pawn breakthrough, rook-vs-pawn promotion trap, trade-into-pawn-endings — 8 more verified tests). Home generalized to all tiers with Preview badges. Validator caught 7 authoring errors.
 - **2026-08-30 (eve)** — Milestone 3 built: SM-2 SRS (`src/progress/`, 17 new unit tests), localStorage v2 store with export/import/reset, self-grading TestRunner + "Show solution" button, review-mode principle cards with Anki buttons, `/review` queue with session summary, Home Continue card + due count + progress bars, minimal `/settings`. Browser-verified end-to-end with Playwright.
 - **2026-08-30 (pm)** — Milestone 2 merged (PR #2): CONTENT_GUIDE.md, build-time content loader, `validate-content` script, Tier 1 fully authored (square rule, king opposition, K+P vs K, rook pawn draws — 16 tests / 8 demos / 13 cards). New Lesson + Test pages, demo player, flip cards, next-position flow. All content hand-verified against endgame theory; validator caught one illegal-move authoring error. Browser-verified through full play-throughs including promotion and black-orientation boards.
 - **2026-08-30 (am)** — Project started from Nico's spec (docs/). Four design directions explored on a Claude Design canvas; settled on direction C ("poster school") with red pieces after visibility mockups. Spec upgraded: Anki SM-2 SRS with principle flip-cards; frictionless-UI ideas. Milestone 1 built and merged: engine + tests, playable opposition position, C-theme UI. Engine validator caught an illegal move in the spec's sample wrong-map.

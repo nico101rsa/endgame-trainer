@@ -12,7 +12,19 @@ Two hard rules from the spec: **no chess engine, ever** (all solutions are hand-
 ## Commands
 
 ```bash
-npm run dev     # dev server on :5173
-npm test        # vitest (solution-tree engine)
-npm run build   # typecheck + production build
+npm run dev       # dev server on :5173
+npm test          # vitest (solution-tree engine + SRS)
+npm run validate  # content validator (FEN/SAN legality, tree termination)
+npm run build     # typecheck + production build
+npm run e2e       # Playwright smoke tests against the built app
 ```
+
+For `npm run e2e` locally, install a browser once with
+`npx playwright-core install chromium` (or point `PW_CHROMIUM` at an
+existing Chromium binary).
+
+## Deployment
+
+Pushes to `main` deploy to GitHub Pages via `.github/workflows/deploy.yml`
+(build is relative-path based, HashRouter handles routing). The app ships a
+web manifest, so it can be added to a phone home screen.

@@ -20,7 +20,7 @@ export function Test() {
   const lessonTo = `/lesson/${lesson.lesson}`
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pt-12 pb-10">
+    <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pt-12 pb-10 md:max-w-3xl">
       <BackHeader
         to={lessonTo}
         label={`${lesson.title} · ${index + 1}/${lesson.tests.length}`}

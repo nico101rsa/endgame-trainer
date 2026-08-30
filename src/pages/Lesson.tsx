@@ -5,6 +5,8 @@ import { DemoPlayer } from '../components/DemoPlayer'
 import { Markdown } from '../components/Markdown'
 import { PrincipleCard } from '../components/PrincipleCard'
 import { getLesson } from '../content/loader'
+import { useJournal } from '../journal/useJournal'
+import { resultLabel } from '../journal/types'
 import { loadProgress, markLessonRead, updateProgress } from '../progress/store'
 
 function SectionHeading({ children }: { children: string }) {
@@ -18,6 +20,13 @@ function SectionHeading({ children }: { children: string }) {
 export function Lesson() {
   const { slug } = useParams()
   const lesson = slug ? getLesson(slug) : undefined
+  const journal = useJournal()
+  // Journal ↔ trainer links (addendum §4): games that point at this lesson.
+  const myGames = lesson
+    ? journal.games
+        .filter((g) => g.linkedLessons.includes(lesson.lesson))
+        .sort((a, b) => b.date.localeCompare(a.date))
+    : []
 
   // First read enters the lesson's principle cards into the review queue
   // (spec §5). Skip the write entirely on re-reads.
@@ -97,6 +106,31 @@ export function Lesson() {
       >
         Start test
       </Link>
+
+      {myGames.length > 0 && (
+        <>
+          <SectionHeading>My games</SectionHeading>
+          <div className="mt-2 flex flex-col gap-2">
+            {myGames.map((g) => (
+              <Link
+                key={g.id}
+                to={`/journal/${g.id}`}
+                className="flex min-h-[44px] items-center gap-3 border-[3px] border-ink bg-panel px-4"
+              >
+                <span className="font-display text-base">
+                  {resultLabel(g.result, g.colour)[0]}
+                </span>
+                <span className="flex-1 text-[14px] font-extrabold">
+                  vs {g.opponent || 'Unknown'}
+                </span>
+                <span className="text-[11px] font-bold uppercase tracking-wide text-muted">
+                  {g.date}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }

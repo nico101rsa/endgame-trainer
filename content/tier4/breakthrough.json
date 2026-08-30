@@ -1,0 +1,124 @@
+{
+  "lesson": "breakthrough",
+  "tier": 4,
+  "order": 1,
+  "scaffold": true,
+  "title": "The breakthrough",
+  "tagline": "Two pawns die so one can queen",
+  "principles": [
+    {
+      "id": "t4-break-p1",
+      "prompt": "Three pawns abreast on your 5th rank face three at home, kings far away. What's possible?",
+      "answer": "A forced passed pawn with no king help: the middle pawn sacrifices itself — twice over — and one outside pawn walks through."
+    },
+    {
+      "id": "t4-break-p2",
+      "prompt": "What's the move-order rule for the breakthrough?",
+      "answer": "Middle pawn first. If they capture toward the a-side, push the c-pawn; toward the c-side, push the a-pawn. The surviving outside pawn is past every defender."
+    },
+    {
+      "id": "t4-break-p3",
+      "prompt": "The enemy trio faces yours and it's your move. What kills their breakthrough forever?",
+      "answer": "The same push, made first — advancing your middle pawn one square denies the sacrifice forever. Prophylaxis costs one tempo and saves the game."
+    },
+    {
+      "id": "t4-break-p4",
+      "prompt": "You're spending two pawns to promote one. What must you count first?",
+      "answer": "That your queen arrives before their counterplay: the breakthrough takes three moves plus the pawn's run, and the new queen must be in time to hunt down whatever they got moving meanwhile."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t4-break-d1",
+      "title": "b6 and the walls come down",
+      "fen": "8/ppp3k1/8/PPP5/8/8/8/6K1 w - - 0 1",
+      "orientation": "w",
+      "intro": "No kings needed. Watch three home pawns lose to three on the fifth — by force.",
+      "steps": [
+        { "move": "b6", "note": "The middle pawn walks into two captures. Both lose." },
+        { "move": "axb6", "note": "Black takes toward the a-side —" },
+        { "move": "c6", "note": "— so the c-pawn steps past. It attacks b7 and cannot be ignored." },
+        { "move": "bxc6", "note": "Forced, or c7 next." },
+        { "move": "a6", "note": "And the a-pawn is through: nothing stands between it and a8. Two pawns spent, one unstoppable." },
+        { "move": "b5", "note": "Black's survivors run too — this is the race you counted before playing b6." },
+        { "move": "a7", "note": "One square out." },
+        { "move": "b4", "note": "Still three moves from glory." },
+        { "move": "a8=Q", "note": "Queened, two full tempi ahead. From a8 the queen hunts the runners down from behind. Count first, then sacrifice." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t4-break-01",
+      "tier": 4,
+      "lesson": "breakthrough",
+      "title": "Middle pawn first",
+      "fen": "8/ppp3k1/8/PPP5/8/8/8/6K1 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Kings out of play, trios facing. There is exactly one way through — and one move order.",
+      "solution": {
+        "moves": {
+          "b6": {
+            "reply": "axb6",
+            "moves": {
+              "c6": {
+                "reply": "bxc6",
+                "moves": {
+                  "a6": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "a6": "bxa6 bxa6 and your pawns are corked — a-file blocked, nothing runs. The breakthrough starts with the middle pawn.",
+          "c6": "bxc6 bxc6 and everything locks — the breakthrough starts with the middle pawn, not a wing.",
+          "Kf2": "The window is one move wide — bring the king over and Black's king arrives too, covering the queening squares."
+        },
+        "hints": [
+          "Only one pawn attacks two defenders at once.",
+          "b6 — whichever way Black captures, push the other wing pawn through the hole."
+        ]
+      },
+      "explanationAfter": "Middle pawn first: axb6 was met by c6, bxc6 by a6, and the a-pawn is past every defender with two tempi to spare. Had Black taken the other way — cxb6 — the mirror works: a6, then c6. One order, two symmetric endings."
+    },
+    {
+      "id": "t4-break-02",
+      "tier": 4,
+      "lesson": "breakthrough",
+      "title": "Southbound crash",
+      "fen": "1k6/8/8/8/5ppp/8/1K3PPP/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "Your trio on the fourth, theirs at home. Same demolition, other direction.",
+      "solution": {
+        "moves": {
+          "g3": {
+            "reply": "hxg3",
+            "moves": {
+              "f3": {
+                "reply": "gxf3",
+                "moves": {
+                  "h3": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "h3": "gxh3 gxh3 and the h-file corks itself — middle pawn first, always.",
+          "f3": "gxf3 gxf3 and everything locks — the middle pawn is the battering ram, not the wings.",
+          "Kc7": "One tempo of king-play and White's king starts back — the breakthrough window closes."
+        },
+        "hints": [
+          "The mirror of the drill you just did: which of your pawns attacks two defenders?",
+          "g3 — after hxg3, f3 rips the next hole; after gxf3, h3 walks through."
+        ]
+      },
+      "explanationAfter": "The g-pawn bought the file, the f-pawn bought the follow-up, and the h-pawn runs to h1 with White's king a spectator. Breakthroughs are colour-blind — learn the shape, not the side."
+    }
+  ]
+}

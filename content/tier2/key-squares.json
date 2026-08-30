@@ -1,0 +1,182 @@
+{
+  "lesson": "key-squares",
+  "tier": 2,
+  "order": 2,
+  "title": "Key squares",
+  "tagline": "Stand here and the game is decided",
+  "principles": [
+    {
+      "id": "t2-keysq-p1",
+      "prompt": "Where are the key squares of a pawn on its 2nd, 3rd or 4th rank?",
+      "answer": "The three squares two ranks ahead of it. For a pawn on e3: d5, e5 and f5."
+    },
+    {
+      "id": "t2-keysq-p2",
+      "prompt": "Where are the key squares once the pawn reaches its 5th or 6th rank?",
+      "answer": "The three squares directly in front of it. For a pawn on e5: d6, e6 and f6 — the zone moves closer as the pawn advances."
+    },
+    {
+      "id": "t2-keysq-p3",
+      "prompt": "Your king reaches a key square of your pawn. What's the verdict?",
+      "answer": "Won, no matter whose move it is. Opposition is just the tool for getting there — the key square is the destination."
+    },
+    {
+      "id": "t2-keysq-p4",
+      "prompt": "How does the defender use key squares?",
+      "answer": "Make every one of them unreachable — cover them or stand on one. The post directly in front of the pawn is strong because one king covers the whole row."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t2-keysq-d1",
+      "title": "What a key square buys",
+      "fen": "4k3/8/8/3KP3/8/8/8/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "The pawn is on e5, so d6, e6 and f6 are key. Watch the whole win fall out of one king move.",
+      "steps": [
+        { "move": "Kd6", "note": "Onto a key square. From here the escort runs itself — whoever moves." },
+        { "move": "Kd8", "note": "Black blocks the path as best he can." },
+        { "move": "e6", "note": "The pawn advances under full cover." },
+        { "move": "Ke8", "note": "Black clings to the queening square." },
+        { "move": "e7", "note": "No check — the tell from Tier 1: a pawn reaching the 7th quietly is a winning sign." },
+        { "move": "Kf7", "note": "Forced away." },
+        { "move": "Kd7", "note": "The king shields e8. Next move the pawn queens — that's what a key square buys: the whole escort, pre-paid." }
+      ]
+    },
+    {
+      "id": "t2-keysq-d2",
+      "title": "Sealing the zone",
+      "fen": "8/8/8/4k3/8/8/4PK2/8 w - - 0 1",
+      "orientation": "b",
+      "intro": "Pawn on e2 — the key squares are d4, e4 and f4. Black's king on e5 covers all three. Watch the seal hold.",
+      "steps": [
+        { "move": "Kf3", "note": "White probes toward f4." },
+        { "move": "Kf5", "note": "Mirror him. f4 stays covered, and d4 is too far away for his king to grab." },
+        { "move": "Ke3", "note": "Back the other way." },
+        { "move": "Ke5", "note": "Face him again — the face-off and the seal, both held by one king." },
+        { "move": "Kd3", "note": "One more try, toward d4." },
+        { "move": "Kd5", "note": "Mirrored again." },
+        { "move": "e3", "note": "The spare tempo — the pawn now stands on e3, and the key squares jump to d5, e5, f5. Black is standing on one of them." },
+        { "move": "Kd6", "note": "Give ground straight back, staying on the pawn's path." },
+        { "move": "Ke4", "note": "White advances at last —" },
+        { "move": "Ke6", "note": "— into the face-off. The pawn is frozen behind its own king, the entry squares are barred, and the game is a draw. A sealed zone beats an extra pawn." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t2-keysq-01",
+      "tier": 2,
+      "lesson": "key-squares",
+      "title": "Name the entry",
+      "fen": "8/8/3k4/8/4K3/4P3/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Pawn on e3: the prizes are d5, e5 and f5. His king watches two of them.",
+      "solution": {
+        "moves": {
+          "Kf5": { "result": "win" }
+        },
+        "wrong": {
+          "Kd4": "You walk into the face-off a tempo down — Kd6 already stares at d4. Go where he isn't.",
+          "Kf4": "One rank short — Ke6 comes and every entry square is covered at once."
+        },
+        "hints": [
+          "His king on d6 covers d5 and e5. Which key square is left unguarded?",
+          "Kf5 — claim the open entry square. A key square is a won game."
+        ]
+      },
+      "explanationAfter": "His king covered d5 and e5 but couldn't stretch to f5. One step onto the open key square and the verdict is fixed — from f5 the escort runs itself, whoever moves."
+    },
+    {
+      "id": "t2-keysq-02",
+      "tier": 2,
+      "lesson": "key-squares",
+      "title": "Guard all three",
+      "fen": "8/8/4k3/8/8/4K3/4P3/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "Pawn on e2 — the entry squares sit on the 4th rank. One of your squares watches them all.",
+      "solution": {
+        "moves": {
+          "Ke5": {
+            "reply": "Kd3",
+            "moves": {
+              "Kd5": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd5": "f4 stays open — Kf4 comes and the pawn has its escort.",
+          "Kf5": "d4 stays open — Kd4 comes and he walks in.",
+          "Kd6": "Too far back — he takes d4, e4 or f4 next move and the zone is his.",
+          "Kf6": "Too far back — he takes d4, e4 or f4 next move and the zone is his."
+        },
+        "hints": [
+          "The pawn is on e2, so the prize squares are d4, e4 and f4 — two ranks ahead of it. One post covers all three.",
+          "Ke5 — the only square that watches d4, e4 and f4 together."
+        ]
+      },
+      "explanationAfter": "From e5 you cover the whole key-square row and hold the face-off. Mirror his sidesteps; when the spare tempo comes, drop straight back on the pawn's path and re-seal one rank higher."
+    },
+    {
+      "id": "t2-keysq-03",
+      "tier": 2,
+      "lesson": "key-squares",
+      "title": "Race to f6",
+      "fen": "8/2k5/8/4P3/4K3/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "The pawn stands on the 5th — its key squares sit right in front of it. Only one is reachable in time.",
+      "solution": {
+        "moves": {
+          "Kf5": {
+            "reply": "Kd7",
+            "moves": {
+              "Kf6": { "result": "win" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd5": "Kd7 comes, and with your king on d5 the one open key square — f6 — is forever out of reach.",
+          "Kd4": "A tempo wasted — Black's king reaches e7 and bars d6, e6 and f6 all at once.",
+          "Kf4": "A tempo wasted — Black's king reaches e7 and bars d6, e6 and f6 all at once.",
+          "e6": "Pushing unescorted throws the pawn away — Kd6 attacks it and your king is too far to defend."
+        },
+        "hints": [
+          "With the pawn on e5 the prizes are d6, e6 and f6. His king watches the queenside pair.",
+          "Kf5, then Kf6 — claim the one key square he can't cover in time."
+        ]
+      },
+      "explanationAfter": "On the 5th rank the key squares sit directly ahead, so the zone is close — but so is his king. You raced around the open side: from f6 the pawn is escorted home no matter what Black does."
+    },
+    {
+      "id": "t2-keysq-04",
+      "tier": 2,
+      "lesson": "key-squares",
+      "title": "The open door",
+      "fen": "8/8/8/4p3/4k3/8/3K4/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "Your pawn this time, marching down the board. White's king watches the queenside pair of entry squares.",
+      "solution": {
+        "moves": {
+          "Kf3": { "result": "win" }
+        },
+        "wrong": {
+          "Kd4": "White slides to e2 and covers d3, e3 and f3 all at once. Enter now, while the door is open.",
+          "Kf4": "White slides to e2 and covers d3, e3 and f3 all at once. Enter now, while the door is open."
+        },
+        "hints": [
+          "Your e5-pawn's prize squares are d3, e3 and f3 — two ranks ahead of it, downhill. Which one does his king not cover?",
+          "Kf3 — through the open door. A key square is a won game, whoever moves."
+        ]
+      },
+      "explanationAfter": "His king on d2 covered d3 and e3 but not f3. The rules are colour-blind: one step through the open door and your pawn's escort can't be stopped."
+    }
+  ]
+}

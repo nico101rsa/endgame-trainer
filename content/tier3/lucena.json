@@ -1,0 +1,138 @@
+{
+  "lesson": "lucena",
+  "tier": 3,
+  "order": 1,
+  "scaffold": true,
+  "title": "The Lucena bridge",
+  "tagline": "Rook to the fourth, king walks out, wall goes up",
+  "principles": [
+    {
+      "id": "t3-lucena-p1",
+      "prompt": "Rook ending: your pawn on the 7th, your king stuck on the queening square, checks incoming. What's the plan?",
+      "answer": "Build the bridge: rook to the fourth rank, king steps out into the checks, and when the king reaches the fifth the rook interposes. Checks over, pawn queens."
+    },
+    {
+      "id": "t3-lucena-p2",
+      "prompt": "Why does the bridge rook go to the fourth rank exactly?",
+      "answer": "The king walks down to the fifth. A rook on the fourth is one step below — ready to block the final check and stand guard while the pawn promotes."
+    },
+    {
+      "id": "t3-lucena-p3",
+      "prompt": "You're defending rook vs rook-and-pawn. Name Philidor's two-part plan.",
+      "answer": "Rook on your third rank so their king can't cross; the moment the pawn steps onto that rank, drop the rook behind them and check forever — their king has no shelter."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t3-lucena-d1",
+      "title": "Building the bridge",
+      "fen": "1K6/1P3k2/8/8/8/8/r7/3R4 w - - 0 1",
+      "orientation": "w",
+      "intro": "The Lucena position: pawn on the 7th, king boxed in front of it, enemy rook ready to check forever. Watch the bridge go up.",
+      "steps": [
+        { "move": "Rd4", "note": "The bridge: the rook takes the fourth rank and waits. Its moment comes last." },
+        { "move": "Ra1", "note": "Black can only wait too — the checks begin when the king steps out." },
+        { "move": "Kc7", "note": "Out into the rain." },
+        { "move": "Rc1+", "note": "Check —" },
+        { "move": "Kb6", "note": "— sidestep —" },
+        { "move": "Rb1+", "note": "— check —" },
+        { "move": "Kc6", "note": "— and down. The king zigzags toward the rook's rank." },
+        { "move": "Rc1+", "note": "Black keeps checking; there's nothing better." },
+        { "move": "Kb5", "note": "The fifth rank — one step above the waiting rook." },
+        { "move": "Rb1+", "note": "The last check…" },
+        { "move": "Rb4", "note": "…meets the bridge. The rook blocks, the checks are over, and b8=Q cannot be stopped." },
+        { "move": "Rxb4+", "note": "Desperation —" },
+        { "move": "Kxb4", "note": "— and the pawn queens next move. Rook to the fourth, king to the fifth, wall between: that's Lucena." }
+      ]
+    },
+    {
+      "id": "t3-lucena-d2",
+      "title": "Philidor holds the door",
+      "fen": "4k3/8/1r6/3K4/4P3/8/8/R7 w - - 0 1",
+      "orientation": "b",
+      "intro": "The defender's mirror. Black's rook patrols the sixth rank — White's king may not cross.",
+      "steps": [
+        { "move": "Ra8+", "note": "Checks achieve nothing." },
+        { "move": "Ke7", "note": "Step up —" },
+        { "move": "Ra7+", "note": "— another try —" },
+        { "move": "Ke8", "note": "— and back. The rook on the sixth is what matters, not the king." },
+        { "move": "e5", "note": "White commits the pawn." },
+        { "move": "Rg6", "note": "The rook keeps the sixth-rank patrol. White's king still can't cross." },
+        { "move": "e6", "note": "The pawn takes the sixth — the rank the rook was renting. Now the plan flips:" },
+        { "move": "Rg1", "note": "Straight to the first rank. The pawn that evicted the rook also blocks its own king's shelter." },
+        { "move": "Kd6", "note": "White advances at last —" },
+        { "move": "Rd1+", "note": "— check." },
+        { "move": "Ke5", "note": "Running —" },
+        { "move": "Re1+", "note": "— check." },
+        { "move": "Kf6", "note": "Nowhere to hide: e7 belongs to Black's king." },
+        { "move": "Rf1+", "note": "Forever. Rook on the third rank until the pawn crosses, then checks from behind: Philidor, and it holds." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t3-lucena-01",
+      "tier": 3,
+      "lesson": "lucena",
+      "title": "Complete the bridge",
+      "fen": "8/1P3k2/8/1K6/2R5/8/1r6/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "The king has walked the gauntlet to the fifth rank and the checks found him one last time. Finish it.",
+      "solution": {
+        "moves": {
+          "Rb4": {
+            "reply": "Rxb4+",
+            "moves": {
+              "Kxb4": { "result": "win" }
+            }
+          }
+        },
+        "wrong": {
+          "Kc6": "Step off the b-file and Rxb7 erases the pawn — every king move abandons it. Block the check instead.",
+          "Kc5": "Step off the b-file and Rxb7 erases the pawn — every king move abandons it. Block the check instead.",
+          "Ka5": "Step off the b-file and Rxb7 erases the pawn — every king move abandons it. Block the check instead.",
+          "Ka6": "Step off the b-file and Rxb7 erases the pawn — every king move abandons it. Block the check instead."
+        },
+        "hints": [
+          "The rook has been waiting on the fourth rank this whole time. This is its moment.",
+          "Rb4 — the bridge closes. If the rooks trade, your king recaptures and the pawn queens."
+        ]
+      },
+      "explanationAfter": "The bridge in one frame: the interposed rook ends the checks and shields the king. Trading was Black's best — after Kxb4 nothing on the board can reach b8 in time."
+    },
+    {
+      "id": "t3-lucena-02",
+      "tier": 3,
+      "lesson": "lucena",
+      "title": "Bridge, southbound",
+      "fen": "8/6R1/8/5r2/6k1/8/2K3p1/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "Your bridge this time, heading down the board. The last check has just landed.",
+      "solution": {
+        "moves": {
+          "Rg5": {
+            "reply": "Rxg5+",
+            "moves": {
+              "Kxg5": { "result": "win" }
+            }
+          }
+        },
+        "wrong": {
+          "Kf4": "Leave the g-file and Rxg2 erases the pawn — half a point gone. The waiting rook blocks instead.",
+          "Kh4": "Leave the g-file and Rxg2 erases the pawn — half a point gone. The waiting rook blocks instead.",
+          "Kf3": "Leave the g-file and Rxg2 erases the pawn — half a point gone. The waiting rook blocks instead.",
+          "Kh3": "Leave the g-file and Rxg2 erases the pawn — half a point gone. The waiting rook blocks instead."
+        },
+        "hints": [
+          "Same picture as the last drill, rotated: your rook on f5 has been waiting for exactly this check.",
+          "Rg5 — block, invite the trade, recapture, queen."
+        ]
+      },
+      "explanationAfter": "Colour-blind again: rook to the (defender's) fourth, king to the fifth, wall between. After Kxg5 the g-pawn touches down and White's king is a spectator."
+    }
+  ]
+}

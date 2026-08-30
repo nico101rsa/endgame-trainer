@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { lessons, lessonsForTier } from '../content/loader'
+import { lessons, lessonsForTier, TIER_NAMES, tiers } from '../content/loader'
 import { todayISO } from '../progress/srs'
 import { dueItemIds, isPositionSolved } from '../progress/store'
 import type { ProgressData } from '../progress/store'
@@ -31,7 +31,6 @@ export function Home() {
   const data = useProgressData()
   const dueCount = dueItemIds(data, todayISO()).length
   const target = continueTarget(data, dueCount)
-  const tier1 = lessonsForTier(1)
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-6 pt-14 pb-10">
@@ -67,44 +66,61 @@ export function Home() {
         </Link>
       </div>
 
-      <div className="mt-8 text-[11px] font-extrabold uppercase tracking-widest text-muted">
-        Tier 1 — Foundations
-      </div>
-      <div className="mt-2 flex flex-col gap-4">
-        {tier1.map((lesson) => {
-          const solved = lesson.tests.filter((t) => isPositionSolved(data, t.id)).length
-          return (
-            <Link
-              key={lesson.lesson}
-              to={`/lesson/${lesson.lesson}`}
-              className="flex items-stretch border-[3px] border-ink bg-panel shadow-[5px_5px_0_#1a170f]"
-            >
-              <div className="flex w-14 items-center justify-center bg-ink font-display text-2xl text-cream">
-                {lesson.order}
-              </div>
-              <div className="flex flex-1 flex-col gap-1 px-4 py-3">
-                <div className="font-extrabold">{lesson.title}</div>
-                <div className="text-[11px] font-bold uppercase tracking-wide text-muted">
-                  {lesson.tagline}
-                </div>
-                <div className="mt-1 flex items-center gap-2">
-                  <div className="h-2 flex-1 border-2 border-ink bg-cream">
-                    <div
-                      className="h-full bg-red"
-                      style={{ width: `${(solved / lesson.tests.length) * 100}%` }}
-                    />
+      {tiers.map((tier) => (
+        <div key={tier}>
+          <div className="mt-8 text-[11px] font-extrabold uppercase tracking-widest text-muted">
+            Tier {tier} — {TIER_NAMES[tier] ?? ''}
+          </div>
+          <div className="mt-2 flex flex-col gap-4">
+            {lessonsForTier(tier).map((lesson) => {
+              const solved = lesson.tests.filter((t) => isPositionSolved(data, t.id)).length
+              return (
+                <Link
+                  key={lesson.lesson}
+                  to={`/lesson/${lesson.lesson}`}
+                  className="flex items-stretch border-[3px] border-ink bg-panel shadow-[5px_5px_0_#1a170f]"
+                >
+                  <div className="flex w-14 items-center justify-center bg-ink font-display text-2xl text-cream">
+                    {lesson.order}
                   </div>
-                  <div className="text-[10px] font-extrabold tracking-widest text-muted">
-                    {solved}/{lesson.tests.length}
+                  <div className="flex flex-1 flex-col gap-1 px-4 py-3">
+                    <div className="flex items-baseline gap-2">
+                      <div className="font-extrabold">{lesson.title}</div>
+                      {lesson.scaffold && (
+                        <div className="border-2 border-red px-1 text-[9px] font-extrabold uppercase tracking-widest text-red">
+                          Preview
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-[11px] font-bold uppercase tracking-wide text-muted">
+                      {lesson.tagline}
+                    </div>
+                    <div className="mt-1 flex items-center gap-2">
+                      <div className="h-2 flex-1 border-2 border-ink bg-cream">
+                        <div
+                          className="h-full bg-red"
+                          style={{ width: `${(solved / lesson.tests.length) * 100}%` }}
+                        />
+                      </div>
+                      <div className="text-[10px] font-extrabold tracking-widest text-muted">
+                        {solved}/{lesson.tests.length}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      ))}
 
-      <div className="mt-10 flex justify-center">
+      <div className="mt-10 flex justify-center gap-6">
+        <Link
+          to="/journal"
+          className="text-[11px] font-extrabold uppercase tracking-widest text-red underline underline-offset-2"
+        >
+          Game journal
+        </Link>
         <Link
           to="/settings"
           className="text-[11px] font-extrabold uppercase tracking-widest text-muted underline underline-offset-2"

@@ -32,6 +32,18 @@ function buildLessons(): Lesson[] {
 
 export const lessons: Lesson[] = buildLessons()
 
+// Tier names from spec §4.
+export const TIER_NAMES: Record<number, string> = {
+  1: 'Foundations',
+  2: 'Beginner',
+  3: 'Intermediate',
+  4: 'Club',
+  5: 'Strong club',
+  6: '1800 target',
+}
+
+export const tiers: number[] = [...new Set(lessons.map((l) => l.tier))].sort((a, b) => a - b)
+
 export function lessonsForTier(tier: number): Lesson[] {
   return lessons.filter((l) => l.tier === tier)
 }
