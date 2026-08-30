@@ -1,5 +1,5 @@
 import type { PositionData } from '../engine/solutionTree'
-import type { Lesson, LessonMeta } from './types'
+import type { Lesson, LessonMeta, PrincipleCard } from './types'
 
 // Build-time content loading (spec §8): every lesson is a JSON + MD pair in
 // /content/tier<N>/. import.meta.glob with eager:true turns them into static
@@ -44,6 +44,16 @@ export function getPosition(id: string): { position: PositionData; lesson: Lesso
   for (const lesson of lessons) {
     const position = lesson.tests.find((t) => t.id === id)
     if (position) return { position, lesson }
+  }
+  return undefined
+}
+
+export function getPrincipleCard(
+  id: string,
+): { card: PrincipleCard; lesson: Lesson } | undefined {
+  for (const lesson of lessons) {
+    const card = lesson.principles.find((c) => c.id === id)
+    if (card) return { card, lesson }
   }
   return undefined
 }

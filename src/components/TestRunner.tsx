@@ -1,25 +1,51 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Chess } from 'chess.js'
 import { Chessboard } from 'react-chessboard'
 import { Link } from 'react-router-dom'
-import type { PositionData } from '../engine/solutionTree'
+import type { PositionData, Solution } from '../engine/solutionTree'
 import { applyMove, startAttempt } from '../engine/solutionTree'
 import type { Cursor } from '../engine/solutionTree'
+import type { Grade } from '../progress/srs'
+import { gradePosition, updateProgress } from '../progress/store'
 
-type Status = 'playing' | 'replying' | 'solved'
+type Status = 'playing' | 'replying' | 'showing' | 'solved'
 
 type Feedback = { tone: 'wrong' | 'info'; text: string } | null
 
 const REPLY_DELAY_MS = 450
+const SOLUTION_STEP_MS = 600
+
+// The first-authored branch at every node is the main line (CONTENT_GUIDE
+// orders alternatives after it); the validator guarantees it terminates.
+function mainLine(solution: Solution): string[] {
+  const sans: string[] = []
+  let moves = solution.moves
+  for (;;) {
+    const san = Object.keys(moves)[0]
+    if (!san) break
+    const node = moves[san]
+    sans.push(san)
+    if (node.result || !node.reply) break
+    sans.push(node.reply)
+    moves = node.moves ?? {}
+  }
+  return sans
+}
 
 export function TestRunner({
   position,
   nextTo,
   lessonTo,
+  onGraded,
+  onNext,
 }: {
   position: PositionData
   nextTo?: string
   lessonTo?: string
+  // Review mode: called once with the self-assigned grade, and the solved
+  // panel offers an onNext button instead of route links.
+  onGraded?: (grade: Grade) => void
+  onNext?: () => void
 }) {
   const gameRef = useRef(new Chess(position.fen))
   const [fen, setFen] = useState(position.fen)
@@ -27,13 +53,35 @@ export function TestRunner({
   const [status, setStatus] = useState<Status>('playing')
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [hintsUsed, setHintsUsed] = useState(0)
+  const [wrongMoves, setWrongMoves] = useState(0)
+  const [solutionShown, setSolutionShown] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null)
+
+  const gradedRef = useRef(false)
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  useEffect(() => () => timersRef.current.forEach(clearTimeout), [])
 
   const hints = position.solution.hints ?? []
   const playerLabel = position.playerSide === 'w' ? 'White' : 'Black'
 
+  function later(fn: () => void, ms: number) {
+    timersRef.current.push(setTimeout(fn, ms))
+  }
+
+  // Spec §5: positions grade themselves once per visit — clean solve = Good,
+  // hinted = Hard, any wrong move or the solution shown = Again. Restarting
+  // doesn't wipe the slate; the first pass through is what gets scheduled.
+  function recordGrade(grade: Grade) {
+    if (gradedRef.current) return
+    gradedRef.current = true
+    updateProgress((data, today) => gradePosition(data, position.id, grade, today))
+    onGraded?.(grade)
+  }
+
   function restart() {
+    timersRef.current.forEach(clearTimeout)
+    timersRef.current = []
     gameRef.current = new Chess(position.fen)
     setFen(position.fen)
     setCursor(startAttempt(position.solution))
@@ -41,6 +89,30 @@ export function TestRunner({
     setFeedback(null)
     setSelected(null)
     setLastMove(null)
+  }
+
+  function showSolution() {
+    if (status === 'showing' || status === 'solved') return
+    recordGrade('again')
+    setSolutionShown(true)
+    timersRef.current.forEach(clearTimeout)
+    timersRef.current = []
+    const game = new Chess(position.fen)
+    gameRef.current = game
+    setFen(position.fen)
+    setLastMove(null)
+    setSelected(null)
+    setFeedback(null)
+    setStatus('showing')
+    const line = mainLine(position.solution)
+    line.forEach((san, i) => {
+      later(() => {
+        const move = game.move(san)
+        setFen(game.fen())
+        setLastMove({ from: move.from, to: move.to })
+        if (i === line.length - 1) setStatus('solved')
+      }, SOLUTION_STEP_MS * (i + 1))
+    })
   }
 
   function tryPlayerMove(from: string, to: string): boolean {
@@ -57,6 +129,7 @@ export function TestRunner({
     const outcome = applyMove(cursor, move.san)
     if (outcome.kind === 'wrong' || outcome.kind === 'unknown') {
       game.undo()
+      setWrongMoves((n) => n + 1)
       setFeedback({
         tone: 'wrong',
         text:
@@ -73,13 +146,14 @@ export function TestRunner({
 
     if (outcome.kind === 'complete') {
       setStatus('solved')
+      recordGrade(wrongMoves > 0 ? 'again' : hintsUsed > 0 ? 'hard' : 'good')
       return true
     }
 
     if (outcome.reply) {
       setStatus('replying')
       const reply = outcome.reply
-      setTimeout(() => {
+      later(() => {
         const replyMove = game.move(reply)
         setFen(game.fen())
         setLastMove({ from: replyMove.from, to: replyMove.to })
@@ -159,11 +233,20 @@ export function TestRunner({
           <div className="flex items-start gap-3 border-[3px] border-ink bg-panel p-4">
             <div className="mt-1 h-3 w-3 shrink-0 bg-red" />
             <div className="text-[15px] font-medium leading-snug">
-              <span className="font-extrabold uppercase">Solved. </span>
+              <span className="font-extrabold uppercase">
+                {solutionShown ? 'The idea. ' : 'Solved. '}
+              </span>
               {position.explanationAfter}
             </div>
           </div>
-          {nextTo ? (
+          {onNext ? (
+            <button
+              onClick={onNext}
+              className="flex min-h-[52px] items-center justify-center bg-ink font-extrabold uppercase tracking-wide text-cream shadow-[4px_4px_0_#c53024]"
+            >
+              Next
+            </button>
+          ) : nextTo ? (
             <Link
               to={nextTo}
               className="flex min-h-[52px] items-center justify-center bg-ink font-extrabold uppercase tracking-wide text-cream shadow-[4px_4px_0_#c53024]"
@@ -184,6 +267,13 @@ export function TestRunner({
           >
             Play it again
           </button>
+        </div>
+      ) : status === 'showing' ? (
+        <div className="flex min-h-[76px] items-start gap-3 border-[3px] border-ink bg-panel p-4">
+          <div className="mt-1 h-3 w-3 shrink-0 bg-ink" />
+          <div className="text-[15px] font-medium leading-snug">
+            Watch — the main line plays out.
+          </div>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -220,6 +310,12 @@ export function TestRunner({
               Restart
             </button>
           </div>
+          <button
+            onClick={showSolution}
+            className="min-h-[44px] border-[3px] border-ink text-[13px] font-extrabold uppercase tracking-wide text-muted"
+          >
+            Show solution — counts as failed
+          </button>
         </div>
       )}
     </div>
