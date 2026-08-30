@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { Chess } from 'chess.js'
 import { Chessboard } from 'react-chessboard'
+import { Link } from 'react-router-dom'
 import type { PositionData } from '../engine/solutionTree'
 import { applyMove, startAttempt } from '../engine/solutionTree'
 import type { Cursor } from '../engine/solutionTree'
@@ -11,7 +12,15 @@ type Feedback = { tone: 'wrong' | 'info'; text: string } | null
 
 const REPLY_DELAY_MS = 450
 
-export function TestRunner({ position }: { position: PositionData }) {
+export function TestRunner({
+  position,
+  nextTo,
+  lessonTo,
+}: {
+  position: PositionData
+  nextTo?: string
+  lessonTo?: string
+}) {
   const gameRef = useRef(new Chess(position.fen))
   const [fen, setFen] = useState(position.fen)
   const [cursor, setCursor] = useState<Cursor>(() => startAttempt(position.solution))
@@ -154,9 +163,24 @@ export function TestRunner({ position }: { position: PositionData }) {
               {position.explanationAfter}
             </div>
           </div>
+          {nextTo ? (
+            <Link
+              to={nextTo}
+              className="flex min-h-[52px] items-center justify-center bg-ink font-extrabold uppercase tracking-wide text-cream shadow-[4px_4px_0_#c53024]"
+            >
+              Next position
+            </Link>
+          ) : lessonTo ? (
+            <Link
+              to={lessonTo}
+              className="flex min-h-[52px] items-center justify-center bg-ink font-extrabold uppercase tracking-wide text-cream shadow-[4px_4px_0_#c53024]"
+            >
+              Back to lesson
+            </Link>
+          ) : null}
           <button
             onClick={restart}
-            className="min-h-[52px] bg-ink font-extrabold uppercase tracking-wide text-cream shadow-[4px_4px_0_#c53024]"
+            className="min-h-[52px] border-[3px] border-ink font-extrabold uppercase tracking-wide"
           >
             Play it again
           </button>
@@ -167,8 +191,18 @@ export function TestRunner({ position }: { position: PositionData }) {
             <div
               className={`mt-1 h-3 w-3 shrink-0 ${feedback?.tone === 'wrong' ? 'bg-red' : 'bg-ink'}`}
             />
-            <div className="text-[15px] font-medium leading-snug">
-              {feedback ? feedback.text : hintsUsed > 0 ? hints[hintsUsed - 1] : position.intro}
+            <div className="flex flex-col gap-2 text-[15px] font-medium leading-snug">
+              <div>
+                {feedback ? feedback.text : hintsUsed > 0 ? hints[hintsUsed - 1] : position.intro}
+              </div>
+              {feedback?.tone === 'wrong' && lessonTo && (
+                <Link
+                  to={lessonTo}
+                  className="text-[11px] font-extrabold uppercase tracking-widest text-red underline underline-offset-2"
+                >
+                  Re-read the idea
+                </Link>
+              )}
             </div>
           </div>
           <div className="flex gap-3">

@@ -27,6 +27,10 @@ export type PositionData = {
   intro: string
   solution: Solution
   explanationAfter: string
+  // Spec §10: flag hand-authored lines you're not certain of instead of
+  // guessing (and never resolve doubt with an engine).
+  needsReview?: boolean
+  reviewNote?: string
 }
 
 // A cursor tracks where we are in the tree during an attempt.

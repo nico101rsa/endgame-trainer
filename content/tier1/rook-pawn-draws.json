@@ -1,0 +1,286 @@
+{
+  "lesson": "rook-pawn-draws",
+  "tier": 1,
+  "order": 4,
+  "title": "Rook pawn draws",
+  "tagline": "Two fortresses that exist on no other file",
+  "principles": [
+    {
+      "id": "t1-rookpawn-p1",
+      "prompt": "What makes a rook pawn different from every other pawn?",
+      "answer": "One side only — no room to outflank. If the defending king reaches the corner, nothing evicts it; the worst case is stalemate, which is the point."
+    },
+    {
+      "id": "t1-rookpawn-p2",
+      "prompt": "You're defending against a rook pawn with the enemy king escorting it. Where do you run?",
+      "answer": "The promotion corner. From a8/b8 (or g1/h1) every attacking setup ends in stalemate."
+    },
+    {
+      "id": "t1-rookpawn-p3",
+      "prompt": "The attacking king stands in front of its own rook pawn. Your king reaches c7 or c8 beside it. Verdict?",
+      "answer": "Draw — c7 covers b6, b7 and b8 at once, and pushing the pawn only walls the king in for stalemate."
+    },
+    {
+      "id": "t1-rookpawn-p4",
+      "prompt": "When does a rook pawn still win?",
+      "answer": "When the attacking king reaches the square beside the corner (b7 against an a-pawn) before the defender arrives — shielding the promotion square from the side, never standing in front of the pawn."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t1-rookpawn-d1",
+      "title": "The corner fortress",
+      "fen": "8/1k6/8/PK6/8/8/8/8 w - - 0 1",
+      "orientation": "b",
+      "intro": "White has everything he could wish for — king beside the pawn, ready to take the 6th. Watch it all come to nothing.",
+      "steps": [
+        { "move": "a6", "note": "Check — the pawn even arrives with tempo. Looks crushing." },
+        { "move": "Kb8", "note": "Toward the corner." },
+        {
+          "move": "Kb6",
+          "note": "White has it all: king on the 6th in front of the pawn, the opposition. On any other file Black could resign."
+        },
+        { "move": "Ka8", "note": "The corner. The whole defence." },
+        {
+          "move": "a7",
+          "note": "Stalemate — not even a check to show for it. The corner defends itself."
+        }
+      ]
+    },
+    {
+      "id": "t1-rookpawn-d2",
+      "title": "The walled-in king",
+      "fen": "2k5/8/K7/8/P7/8/8/8 w - - 0 1",
+      "orientation": "b",
+      "intro": "White's king marches proudly in front of its pawn — the winning picture on any other file. Here it's a cell.",
+      "steps": [
+        { "move": "Ka7", "note": "The king takes the front. With any other pawn, decisive." },
+        { "move": "Kc7", "note": "The seal: one square covers b6, b7 and b8 — every exit at once." },
+        { "move": "a5", "note": "Nothing to do but push." },
+        { "move": "Kc8", "note": "Black just shuffles, keeping b7 and b8 covered." },
+        { "move": "a6", "note": "Push." },
+        { "move": "Kc7", "note": "Shuffle." },
+        { "move": "Ka8", "note": "The king makes room for its pawn — deeper into the cell." },
+        { "move": "Kc8", "note": "Still covering both exit squares." },
+        { "move": "a7", "note": "The pawn bricks up the last square." },
+        { "move": "Kc7", "note": "White to move — and nothing moves. Stalemate: the escort king entombed by his own pawn." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t1-rookpawn-01",
+      "tier": 1,
+      "lesson": "rook-pawn-draws",
+      "title": "Corner office",
+      "fen": "3k4/8/8/1K6/P7/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "Against a rook pawn there's a safe house. Check in before White's king locks the door.",
+      "solution": {
+        "moves": {
+          "Kc8": {
+            "reply": "Kb6",
+            "moves": {
+              "Kb8": { "result": "draw" }
+            }
+          },
+          "Kc7": {
+            "reply": "a5",
+            "moves": {
+              "Kb8": { "result": "draw" },
+              "Kb7": { "result": "draw" }
+            }
+          },
+          "Kd7": {
+            "reply": "Kb6",
+            "moves": {
+              "Kc8": {
+                "reply": "Ka7",
+                "moves": {
+                  "Kc7": { "result": "draw" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Ke7": "One square too slow — White's king gets to b7 first, and from beside the corner the escort works even for a rook pawn. Head straight for the corner: Kc8 or Kc7.",
+          "Ke8": "One square too slow — White's king gets to b7 first, and from beside the corner the escort works even for a rook pawn. Head straight for the corner: Kc8 or Kc7."
+        },
+        "hints": [
+          "The pawn's file has only one neighbour, and the corner can't be forced open. Which way?",
+          "Kc8 or Kc7 — reach b8, or seal White's king in on the c-file. Both roads end in the corner draw."
+        ]
+      },
+      "explanationAfter": "Every road toward the corner draws: sit on a8/b8 and the pawn's arrival is stalemate, or seal White's king in front of his own pawn from c7 and HE'S the one stalemated. Both fortresses exist only on the rook's file — one file over, White wins with ease."
+    },
+    {
+      "id": "t1-rookpawn-02",
+      "tier": 1,
+      "lesson": "rook-pawn-draws",
+      "title": "Wall him in",
+      "fen": "8/K2k4/8/P7/8/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "White's king proudly leads his pawn — on any other file, game over. Here it's a prison. Lock the door.",
+      "solution": {
+        "moves": {
+          "Kc7": {
+            "reply": "a6",
+            "moves": {
+              "Kc8": {
+                "reply": "Ka8",
+                "moves": {
+                  "Kc7": {
+                    "reply": "a7",
+                    "moves": {
+                      "Kc8": { "result": "draw" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Kc8": {
+            "reply": "Kb6",
+            "moves": {
+              "Kb8": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd6": "Cutting through the middle is a move too slow — White plays Kb6 and c7 is suddenly out of reach. Seal him NOW: Kc7 covers b6, b7 and b8 in one go.",
+          "Kd8": "White escapes with Kb7 and escorts the pawn from beside it — the one rook-pawn setup that wins. Kc7 walls him in first."
+        },
+        "hints": [
+          "White's king needs b6, b7 or b8 to come out. One square of yours covers all three.",
+          "Kc7 — then shuffle between c7 and c8 forever. White ends up stalemating himself."
+        ]
+      },
+      "explanationAfter": "c7 covers every exit at once, and the c7–c8 shuffle keeps them covered forever. When the pawn finally reaches a7, White's own king on a8 has bricked itself in — stalemate. The king that leads a rook pawn isn't escorting; he's walling himself in."
+    },
+    {
+      "id": "t1-rookpawn-03",
+      "tier": 1,
+      "lesson": "rook-pawn-draws",
+      "title": "Beat him to b7",
+      "fen": "4k3/8/8/1K6/P7/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "A rook pawn CAN win — if your king rules the corner from the side before his king moves in. Race.",
+      "solution": {
+        "moves": {
+          "Kb6": {
+            "reply": "Kd8",
+            "moves": {
+              "Kb7": {
+                "reply": "Kd7",
+                "moves": {
+                  "a5": {
+                    "reply": "Kd8",
+                    "moves": {
+                      "a6": {
+                        "reply": "Kd7",
+                        "moves": {
+                          "a7": {
+                            "reply": "Kd8",
+                            "moves": {
+                              "a8=Q": { "result": "win" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Kc6": {
+            "reply": "Kd8",
+            "moves": {
+              "Kb7": {
+                "reply": "Kd7",
+                "moves": {
+                  "a5": { "result": "win" }
+                }
+              }
+            }
+          },
+          "Ka6": {
+            "reply": "Kd7",
+            "moves": {
+              "Kb7": {
+                "reply": "Kd8",
+                "moves": {
+                  "a5": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "a5": "The pawn can't run there alone — Black's king slips to c8, then b8, and the corner swallows the game. Race your KING to b7 first: it must rule a8 and b8 from the side.",
+          "Kc5": "Diagonal feels fast, but Black replies Kd7 and reaches c8 in time — corner fortress, draw. Keep the pace forward: Kb6 and then Kb7 arrives first."
+        },
+        "hints": [
+          "Your king must own a8 and b8 from BESIDE them — b7 — and never stand on a7 or a8 itself. That's the self-trap.",
+          "Kb6, then Kb7. Once the king sits on b7, the pawn strolls: a5, a6, a7, a8."
+        ]
+      },
+      "explanationAfter": "b7 is the winning square: from beside the corner the king shields a8 without blocking it. Notice what you never did — stand in front of your own pawn. With a rook pawn, in front means walled in; beside means escort."
+    },
+    {
+      "id": "t1-rookpawn-04",
+      "tier": 1,
+      "lesson": "rook-pawn-draws",
+      "title": "Run to h1",
+      "fen": "8/8/8/7p/6k1/8/8/4K3 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "draw",
+      "playerSide": "w",
+      "intro": "Black's h-pawn has a full escort. Your saving square is the corner — get there.",
+      "solution": {
+        "moves": {
+          "Kf1": {
+            "reply": "Kg3",
+            "moves": {
+              "Kg1": { "result": "draw" }
+            }
+          },
+          "Kf2": {
+            "reply": "h4",
+            "moves": {
+              "Kg1": { "result": "draw" },
+              "Kg2": { "result": "draw" }
+            }
+          },
+          "Ke2": {
+            "reply": "Kg3",
+            "moves": {
+              "Kf1": {
+                "reply": "Kh2",
+                "moves": {
+                  "Kf2": { "result": "draw" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kd2": "One square too slow — Black's king takes g2 and escorts the pawn from beside it: the one rook-pawn setup that wins. Run to the corner: Kf1 or Kf2.",
+          "Kd1": "One square too slow — Black's king takes g2 and escorts the pawn from beside it: the one rook-pawn setup that wins. Run to the corner: Kf1 or Kf2."
+        },
+        "hints": [
+          "Same fortresses as the a-pawn, other corner: h1 can't be forced open, and f2 walls his king in.",
+          "Kf1 or Kf2 (even Ke2 holds) — reach g1, or seal Black's king in from the f-file."
+        ]
+      },
+      "explanationAfter": "The same two fortresses, mirrored: sit on g1/h1 and the pawn's arrival is stalemate, or seal Black's king in front of its own pawn from f2. Rook-pawn defence is a race to squares that can never be taken from you."
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "lesson": "kp-vs-k",
+  "tier": 1,
+  "order": 3,
+  "title": "King + pawn vs king",
+  "tagline": "The escort, the blockade, and the 7th-rank tell",
+  "principles": [
+    {
+      "id": "t1-kpk-p1",
+      "prompt": "Your king stands in front of your pawn, two ranks ahead of it. What's the verdict?",
+      "answer": "Winning, whoever moves — the headroom means you can always regain the opposition. (Rook pawns excepted.)"
+    },
+    {
+      "id": "t1-kpk-p2",
+      "prompt": "Your king is in front of your pawn, but only one rank ahead. Who wins?",
+      "answer": "It hinges on the opposition: if the defender must move, you win; if you must move, it's a draw. On the 6th rank in front of the pawn you win regardless."
+    },
+    {
+      "id": "t1-kpk-p3",
+      "prompt": "You're defending, king in front of the pawn, and you're forced to give ground. Which way back?",
+      "answer": "Straight back on the pawn's file, never diagonally — so the pawn can only reach the 7th rank with check."
+    },
+    {
+      "id": "t1-kpk-p4",
+      "prompt": "The pawn steps to its 7th rank. Win or draw — what's the tell?",
+      "answer": "Check = draw: the defender slides in front and it's stalemate or the pawn falls. No check = win: the king shields the promotion square."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t1-kpk-d1",
+      "title": "The escort",
+      "fen": "3k4/8/3K4/3P4/8/8/8/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "White's king stands on the 6th rank in front of his pawn — a guaranteed win. Watch the escort bring it home.",
+      "steps": [
+        {
+          "move": "Kc6",
+          "note": "The king sidesteps. On the 6th in front of the pawn, this wins no matter whose move it is."
+        },
+        { "move": "Kc8", "note": "Black clings to the queening corner." },
+        { "move": "d6", "note": "The pawn advances under full escort." },
+        { "move": "Kd8", "note": "Blocking the road once more." },
+        {
+          "move": "d7",
+          "note": "The moment that decides everything: the pawn hits the 7th WITHOUT check."
+        },
+        { "move": "Ke7", "note": "Black must step off the promotion square." },
+        { "move": "Kc7", "note": "The king shields d8. Nothing stops the queen now." }
+      ]
+    },
+    {
+      "id": "t1-kpk-d2",
+      "title": "Straight back",
+      "fen": "8/4k3/8/4K3/4P3/8/8/8 w - - 0 1",
+      "orientation": "b",
+      "intro": "Black's king holds the pawn's path. Played exactly, this is a draw — every move matters.",
+      "steps": [
+        { "move": "Kd5", "note": "White probes with a sidestep." },
+        { "move": "Kd7", "note": "Mirror. Every sidestep is answered in kind." },
+        {
+          "move": "e5",
+          "note": "White spends his pawn move — but with the king beside the pawn, not in front, it gains nothing."
+        },
+        { "move": "Ke7", "note": "Back in the road." },
+        { "move": "e6", "note": "Now the pawn leans on the king directly." },
+        {
+          "move": "Ke8",
+          "note": "Straight back — the move that saves the game. The diagonal retreats to d8 or f8 both lose."
+        },
+        { "move": "Kd6", "note": "White grabs the opposition — one square from victory." },
+        { "move": "Kd8", "note": "But Black has the answer ready: oppose again." },
+        { "move": "e7", "note": "The pawn arrives on the 7th WITH check — the drawing kind." },
+        { "move": "Ke8", "note": "In front of it one last time." },
+        {
+          "move": "Ke6",
+          "note": "Stalemate. Half a point for standing still — that's the whole defence."
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t1-kpk-01",
+      "tier": 1,
+      "lesson": "kp-vs-k",
+      "title": "Bring it home",
+      "fen": "4k3/8/4K3/4P3/8/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Your king is on the 6th, in front of the pawn — a won position. Prove it.",
+      "solution": {
+        "moves": {
+          "Kd6": {
+            "reply": "Kd8",
+            "moves": {
+              "e6": {
+                "reply": "Ke8",
+                "moves": {
+                  "e7": {
+                    "reply": "Kf7",
+                    "moves": {
+                      "Kd7": { "result": "win" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Kf6": {
+            "reply": "Kf8",
+            "moves": {
+              "e6": {
+                "reply": "Ke8",
+                "moves": {
+                  "e7": {
+                    "reply": "Kd7",
+                    "moves": {
+                      "Kf7": { "result": "win" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kd5": "You stepped out of the driver's seat — Black replies Ke7, covers every square in front of the pawn, and holds forever. Sidestep forward instead: Kd6 or Kf6.",
+          "Kf5": "You stepped out of the driver's seat — Black replies Ke7, covers every square in front of the pawn, and holds forever. Sidestep forward instead: Kd6 or Kf6."
+        },
+        "hints": [
+          "The king leads. Which sidesteps keep it on the 6th rank, ahead of the pawn?",
+          "Kd6 or Kf6 — Black's king must give ground, and the pawn follows under escort."
+        ]
+      },
+      "explanationAfter": "Sidestep on the 6th, walk the pawn up behind the king, and land it on the 7th without check — then the king shields the promotion square. If your king ever drops back off the 6th, Black plants his king in front of the pawn and the win is gone."
+    },
+    {
+      "id": "t1-kpk-02",
+      "tier": 1,
+      "lesson": "kp-vs-k",
+      "title": "The saving square",
+      "fen": "4k3/8/4PK2/8/8/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "White's king stands ready beside the pawn. You have exactly two legal moves — one draws, one loses.",
+      "solution": {
+        "moves": {
+          "Kf8": {
+            "reply": "e7",
+            "moves": {
+              "Ke8": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd8": "Wrong side! White answers Kf7, owns e8, and the pawn strolls in without a single check. Kf8 instead — it bars f7, and the only push left arrives with check."
+        },
+        "hints": [
+          "White wants Kf7 next, seizing the promotion square. Which retreat forbids it?",
+          "Kf8 — now e7 comes with check, and after Ke8 White has nothing better than stalemate."
+        ]
+      },
+      "explanationAfter": "Kf8 bars f7, so the pawn must arrive with check — and after e7+ Ke8, White must give stalemate or abandon the pawn. Kd8 hands White f7 and the e8 square: the pawn then walks in silently, and silent means winning."
+    },
+    {
+      "id": "t1-kpk-03",
+      "tier": 1,
+      "lesson": "kp-vs-k",
+      "title": "The full defence",
+      "fen": "8/3k4/8/4K3/4P3/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "White's king leads his pawn up the board. Hold the draw from here — every move is a test.",
+      "solution": {
+        "moves": {
+          "Ke7": {
+            "reply": "Kd5",
+            "moves": {
+              "Kd7": {
+                "reply": "e5",
+                "moves": {
+                  "Ke7": {
+                    "reply": "e6",
+                    "moves": {
+                      "Ke8": {
+                        "reply": "Kd6",
+                        "moves": {
+                          "Kd8": {
+                            "reply": "e7",
+                            "moves": {
+                              "Ke8": { "result": "draw" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "Kf6": {
+                "reply": "e5",
+                "moves": {
+                  "Ke7": { "result": "draw" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kd8": "Straight back is right later — right now White strides to d6, in front of his pawn, and wins. First bar his king: Ke7.",
+          "Kc6": "You're abandoning the pawn's road — White plays Ke6, plants his king in front, and escorts it home. Ke7 holds the door.",
+          "Ke8": "One rank too generous — White takes e6, in front of his pawn, and it's over. Stay close: Ke7, opposing his king."
+        },
+        "hints": [
+          "His king leads the pawn — yours must bar the road. Which square faces e5 with one gap?",
+          "Ke7 — take the opposition. Then mirror every sidestep, and when the pawn pushes you, retreat straight back."
+        ]
+      },
+      "explanationAfter": "The whole defence in one line: take the opposition, mirror each sidestep, re-block after every pawn push, retreat straight back — and when the pawn hits the 7th with check, slide in front for the stalemate. One diagonal retreat anywhere along the way and White's king claims the square in front."
+    },
+    {
+      "id": "t1-kpk-04",
+      "tier": 1,
+      "lesson": "kp-vs-k",
+      "title": "Your escort service",
+      "fen": "8/8/8/8/4p3/4k3/8/4K3 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "Same won position, your colours: king on its 6th, pawn behind. Bring it home for Black.",
+      "solution": {
+        "moves": {
+          "Kd3": {
+            "reply": "Kd1",
+            "moves": {
+              "e3": {
+                "reply": "Ke1",
+                "moves": {
+                  "e2": {
+                    "reply": "Kf2",
+                    "moves": {
+                      "Kd2": { "result": "win" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Kf3": {
+            "reply": "Kf1",
+            "moves": {
+              "e3": {
+                "reply": "Ke1",
+                "moves": {
+                  "e2": {
+                    "reply": "Kd2",
+                    "moves": {
+                      "Kf2": { "result": "win" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kd4": "Backwards is out of the driver's seat — White replies Ke2, covers every square in front of your pawn, and holds. Sidestep forward: Kd3 or Kf3.",
+          "Kf4": "Backwards is out of the driver's seat — White replies Ke2, covers every square in front of your pawn, and holds. Sidestep forward: Kd3 or Kf3."
+        },
+        "hints": [
+          "Same technique as White's escort, upside down. Which sidesteps keep your king in front, on its 6th rank?",
+          "Kd3 or Kf3 — White's king must give ground, then the pawn follows you in."
+        ]
+      },
+      "explanationAfter": "The escort works identically in both directions: sidestep on your 6th rank, advance the pawn behind the king, land it on the 2nd without check, and shield e1 while it queens."
+    }
+  ]
+}
