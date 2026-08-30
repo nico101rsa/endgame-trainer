@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Schibsted Grotesk', system-ui, sans-serif; }
+    a { color: #c53024; } a:hover { color: #9c2118; }
+  </style>
+</helmet>
+<div style="width: 390px; height: 844px; background: #f0e6d2; color: #1a170f; display: flex; flex-direction: column; overflow: hidden">
+  <div style="display: flex; align-items: flex-end; gap: 12px; padding: 56px 22px 18px 22px">
+    <div style="font-family: 'Anton', 'Arial Narrow', sans-serif; font-size: 36px; line-height: 1; text-transform: uppercase">Settings</div>
+    <div style="width: 20px; height: 20px; background: #c53024; margin-bottom: 4px"></div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 0 22px; flex-grow: 1; overflow: hidden">
+    <div style="display: flex; flex-direction: column; gap: 0">
+      <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #6f6552; padding-bottom: 8px">Board</div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; background: #f7efdd; padding: 12px 14px">
+        <div style="font-size: 14px; font-weight: 700">Theme</div>
+        <div style="display: flex; gap: 10px">
+          <div style="width: 40px; height: 40px; background: repeating-conic-gradient(#4a4232 0% 25%, #f7efdd 0% 50%); background-size: 50% 50%; border: 3px solid #c53024"></div>
+          <div style="width: 40px; height: 40px; background: repeating-conic-gradient(#cb6f52 0% 25%, #f7efdd 0% 50%); background-size: 50% 50%; border: 2px solid #1a170f"></div>
+          <div style="width: 40px; height: 40px; background: repeating-conic-gradient(#b38b62 0% 25%, #efdfc0 0% 50%); background-size: 50% 50%; border: 2px solid #1a170f"></div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; border-top: 0; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="font-size: 14px; font-weight: 700">Pieces</div>
+        <div style="font-size: 13px; font-weight: 700; color: #6f6552">Red &amp; cream</div>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; border-top: 0; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="font-size: 14px; font-weight: 700">Sound</div>
+        <div style="display: flex; align-items: center; width: 56px; height: 28px; border: 3px solid #1a170f; background: #c53024; justify-content: flex-end"><div style="width: 22px; height: 22px; background: #f0e6d2; border-left: 3px solid #1a170f"></div></div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0">
+      <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #6f6552; padding-bottom: 8px">Progress</div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="font-size: 14px; font-weight: 700">Export as JSON</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a170f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14"></path></svg>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; border-top: 0; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="font-size: 14px; font-weight: 700">Import from JSON</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a170f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 19h14"></path></svg>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; border-top: 0; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="font-size: 14px; font-weight: 800; color: #c53024">Reset progress</div>
+        <div style="font-size: 11px; font-weight: 700; color: #6f6552">ASKS TWICE</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0">
+      <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #6f6552; padding-bottom: 8px">Account &amp; sync</div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="font-size: 14px; font-weight: 700">Signed in · magic link</div>
+          <div style="font-size: 11px; font-weight: 700; color: #6f6552">LAST SYNCED TODAY 09:12</div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; background: #1a170f; color: #f0e6d2; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 10px 14px; min-height: 44px">Sync now</div>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 3px solid #1a170f; border-top: 0; background: #f7efdd; padding: 8px 14px; min-height: 44px">
+        <div style="font-size: 14px; font-weight: 700">Sign out</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a170f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px"><path d="M9.5 5.5L16 12l-6.5 6.5"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-around; align-items: center; padding: 14px 12px 30px 12px; border-top: 3px solid #1a170f; background: #f0e6d2">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #1a170f; min-width: 64px; min-height: 44px; justify-content: center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px"><path d="M12 6.5C10.7 5 8.7 4.2 4.5 4.2v13.6c4.2 0 6.2.8 7.5 2.2 1.3-1.4 3.3-2.2 7.5-2.2V4.2c-4.2 0-6.2.8-7.5 2.3z"></path><path d="M12 6.5V20"></path></svg>
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase">Learn</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #1a170f; min-width: 64px; min-height: 44px; justify-content: center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px"><circle cx="12" cy="13" r="7"></circle><path d="M12 9.5V13l2.5 2M9.5 3.5h5"></path></svg>
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase">Review</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #1a170f; min-width: 64px; min-height: 44px; justify-content: center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px"><rect x="5" y="4" width="14" height="17" rx="1"></rect><path d="M9 8.5h6M9 12.5h6M9 16.5h4"></path></svg>
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase">Games</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #c53024; min-width: 64px; min-height: 44px; justify-content: center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px"><circle cx="12" cy="12" r="3.2"></circle><path d="M12 4v2.4M12 17.6V20M4 12h2.4M17.6 12H20M6.6 6.6l1.7 1.7M15.7 15.7l1.7 1.7M17.4 6.6L15.7 8.3M8.3 15.7l-1.7 1.7"></path></svg>
+      <div style="font-size: 11px; font-weight: 800; text-transform: uppercase">Settings</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

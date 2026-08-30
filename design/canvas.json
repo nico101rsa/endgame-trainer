@@ -1,0 +1,32 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Trainer" },
+    { "id": "page-3", "name": "Journal & settings" },
+    { "id": "page-2", "name": "Other directions" }
+  ],
+  "artboards": [
+    { "file": "HomeC.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "Home", "page": "page-1" },
+    { "file": "Main.dc.html", "x": 470, "y": 0, "w": 390, "h": 844, "title": "Test mode", "page": "page-1" },
+    { "file": "ReviewCard.dc.html", "x": 940, "y": 0, "w": 390, "h": 844, "title": "Review — principle card", "page": "page-1" },
+    { "file": "Lesson.dc.html", "x": 1410, "y": 0, "w": 390, "h": 844, "title": "Lesson — demo", "page": "page-1" },
+    { "file": "Tier2.dc.html", "x": 1880, "y": 0, "w": 390, "h": 844, "title": "Tier page", "page": "page-1" },
+    { "file": "Games.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "Games list", "page": "page-3" },
+    { "file": "GameViewer.dc.html", "x": 470, "y": 0, "w": 390, "h": 844, "title": "Game viewer", "page": "page-3" },
+    { "file": "AddGame.dc.html", "x": 940, "y": 0, "w": 390, "h": 844, "title": "New game", "page": "page-3" },
+    { "file": "Settings.dc.html", "x": 1410, "y": 0, "w": 390, "h": 844, "title": "Settings", "page": "page-3" },
+    { "file": "HomeA.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "A · Study hall — Home", "page": "page-2" },
+    { "file": "TestA.dc.html", "x": 470, "y": 0, "w": 390, "h": 844, "title": "A · Study hall — Test", "page": "page-2" },
+    { "file": "HomeB.dc.html", "x": 1060, "y": 0, "w": 390, "h": 844, "title": "B · Tournament — Home", "page": "page-2" },
+    { "file": "TestB.dc.html", "x": 1530, "y": 0, "w": 390, "h": 844, "title": "B · Tournament — Test", "page": "page-2" },
+    { "file": "HomeD.dc.html", "x": 2120, "y": 0, "w": 390, "h": 844, "title": "D · Quiet board — Home", "page": "page-2" },
+    { "file": "TestD.dc.html", "x": 2590, "y": 0, "w": 390, "h": 844, "title": "D · Quiet board — Test", "page": "page-2" }
+  ],
+  "annotations": [
+    { "id": "note-c-settled", "x": 0, "y": -195, "w": 400, "page": "page-1", "text": "Settled 30 Aug: direction C (poster school), red pieces — Black plays in red, White in cream, heavy black outlines, black-outline last-move markers. Review is Anki-style: principle flip-cards graded Again/Hard/Good/Easy, positions grade themselves." },
+    { "id": "note-journal", "x": 0, "y": -195, "w": 400, "page": "page-3", "text": "OTB journal — a diary, not an analysis tool: no engine, no evaluations, no ratings anywhere. The W/L/D strip is a descriptive tally of the player's own entries. \"Study: Philidor\" on the viewer links the game to a trainer lesson." },
+    { "id": "note-direction-a", "x": 0, "y": -200, "w": 380, "page": "page-2", "text": "A · Study hall — warm paper, serif headings, wooden board. Feels like working through a good endgame book.\nTradeoff: the calmest option, but the least distinctive at a glance." },
+    { "id": "note-direction-b", "x": 1060, "y": -200, "w": 380, "page": "page-2", "text": "B · Tournament — dark UI, vinyl-green board, mono numerals, segmented progress. Focused, session-like, easy on the eyes at night.\nTradeoff: reads gamified; less of the study-book calm." },
+    { "id": "note-direction-d", "x": 2120, "y": -200, "w": 380, "page": "page-2", "text": "D · Quiet board — near-monochrome, hairlines, one blue accent, board with no frame. Nothing competes with the position.\nTradeoff: restraint depends on flawless spacing; can feel plain." }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

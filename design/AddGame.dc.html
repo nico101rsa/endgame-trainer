@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Schibsted Grotesk', system-ui, sans-serif; }
+    a { color: #c53024; } a:hover { color: #9c2118; }
+  </style>
+</helmet>
+<div style="width: 390px; height: 844px; background: #f0e6d2; color: #1a170f; display: flex; flex-direction: column; overflow: hidden">
+  <div style="display: flex; align-items: center; gap: 12px; padding: 52px 22px 8px 22px">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#1a170f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px"><path d="M14.5 5.5L8 12l6.5 6.5"></path></svg>
+    <div style="font-family: 'Anton', 'Arial Narrow', sans-serif; font-size: 30px; line-height: 1; text-transform: uppercase">New game</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 12px 22px 0 22px; flex-grow: 1; overflow: hidden">
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 4px; border: 3px solid #1a170f; background: #f7efdd; padding: 10px 12px">
+        <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Date</div>
+        <div style="font-size: 15px; font-weight: 700">29 Aug 2026</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; border: 3px solid #1a170f; background: #f7efdd; padding: 10px 12px">
+        <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Time control</div>
+        <div style="font-size: 15px; font-weight: 700">90+30</div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; border: 3px solid #1a170f; background: #f7efdd; padding: 10px 12px">
+      <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Event</div>
+      <div style="font-size: 15px; font-weight: 700">Club championship, round 4</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; border: 3px solid #1a170f; background: #f7efdd; padding: 10px 12px">
+      <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Opponent</div>
+      <div style="font-size: 15px; font-weight: 700">J. Smith</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; border: 3px solid #1a170f; background: #f7efdd; padding: 10px 12px">
+      <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Venue</div>
+      <div style="font-size: 15px; font-weight: 700">Nor<span style="border-right: 2px solid #c53024; padding-right: 1px"></span></div>
+    </div>
+    <div style="display: flex; gap: 8px">
+      <div style="display: flex; align-items: center; justify-content: center; background: #1a170f; color: #f0e6d2; font-size: 12px; font-weight: 700; padding: 0 12px; min-height: 38px">Norths Chess Club</div>
+      <div style="display: flex; align-items: center; justify-content: center; border: 2px solid #1a170f; color: #1a170f; font-size: 12px; font-weight: 700; padding: 0 12px; min-height: 38px">North Sydney Leagues</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">My colour</div>
+        <div style="display: flex; border: 3px solid #1a170f">
+          <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 44px; background: #1a170f; color: #f0e6d2; font-size: 13px; font-weight: 800; text-transform: uppercase">White</div>
+          <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 44px; color: #1a170f; font-size: 13px; font-weight: 800; text-transform: uppercase">Black</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Result</div>
+        <div style="display: flex; border: 3px solid #1a170f">
+          <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 44px; color: #1a170f; font-size: 13px; font-weight: 800">W</div>
+          <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 44px; background: #c53024; color: #f0e6d2; font-size: 13px; font-weight: 800">L</div>
+          <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 44px; color: #1a170f; font-size: 13px; font-weight: 800">D</div>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; border: 3px solid #1a170f; background: #f7efdd; padding: 10px 12px">
+      <div style="font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #6f6552">Opening</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+        <div style="font-size: 15px; font-weight: 700">Queen's Gambit Declined</div>
+        <div style="font-size: 10px; font-weight: 700; color: #6f6552">FROM PAST GAMES</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px; padding: 18px 22px 40px 22px">
+    <div style="display: flex; align-items: center; justify-content: center; min-height: 52px; background: #1a170f; color: #f0e6d2; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 4px 4px 0 #c53024">Enter moves on the board</div>
+    <div style="display: flex; align-items: center; justify-content: center; min-height: 48px; border: 3px solid #1a170f; color: #1a170f; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px">Paste PGN instead</div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
