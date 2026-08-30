@@ -1,0 +1,221 @@
+{
+  "lesson": "wrong-bishop",
+  "tier": 2,
+  "order": 4,
+  "title": "The wrong bishop",
+  "tagline": "Bishop, rook pawn, wrong corner: draw",
+  "principles": [
+    {
+      "id": "t2-wbishop-p1",
+      "prompt": "White has an h-pawn and a light-squared bishop. Why is Black's draw already in sight?",
+      "answer": "h8 is a dark square, so the bishop can never control the queening corner. If Black's king reaches it, stalemate defends everything: wrong bishop, rook pawn, draw."
+    },
+    {
+      "id": "t2-wbishop-p2",
+      "prompt": "How do you tell instantly whether a bishop is the 'wrong' one?",
+      "answer": "Look at the promotion corner's colour. Bishop doesn't match it = wrong. Only rook pawns have this problem — every other pawn queens on a square the defender can't fortress."
+    },
+    {
+      "id": "t2-wbishop-p3",
+      "prompt": "You're defending against rook pawn + wrong bishop. What's the whole plan?",
+      "answer": "King to the corner by the shortest road, then stay. Material, checks, the pawn's speed — none of it matters if you arrive. And a one-colour diagonal road can never be blocked by the other-coloured bishop."
+    },
+    {
+      "id": "t2-wbishop-p4",
+      "prompt": "You're the one attacking with rook pawn + wrong bishop. What's your only winning idea?",
+      "answer": "Fence the defending king out of the corner before it gets there. Once it's in, there is no eviction — offer the draw."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t2-wbishop-d1",
+      "title": "The fortress that cannot fall",
+      "fen": "7k/8/5K2/8/7P/8/4B3/8 b - - 0 1",
+      "orientation": "w",
+      "intro": "Black is a bishop and pawn down, king in the corner. Watch White try everything and achieve nothing.",
+      "steps": [
+        { "move": "Kg8", "note": "Black's entire plan: shuffle between g8 and h8." },
+        { "move": "h5", "note": "The pawn marches. It doesn't matter." },
+        { "move": "Kh8", "note": "Shuffle." },
+        { "move": "h6", "note": "Closer. The bishop, meanwhile, watches light squares — h8 is dark." },
+        { "move": "Kg8", "note": "Shuffle." },
+        { "move": "h7+", "note": "The pawn arrives with check —" },
+        { "move": "Kh8", "note": "— and now it can never queen: the king sits on h8 and no piece White owns can touch a dark square." },
+        { "move": "Kg6", "note": "Stalemate. g8 is covered by the pawn, g7 by the king, h7 is occupied. Half a point each — the wrong bishop in one picture." }
+      ]
+    },
+    {
+      "id": "t2-wbishop-d2",
+      "title": "Slam the door",
+      "fen": "3k4/8/4K3/8/8/8/2B4P/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "Same material, one difference: Black's king isn't in the corner yet. White's only winning idea — keep it out.",
+      "steps": [
+        { "move": "Kf7", "note": "The door: from f7 White's king owns g8, and Black can never reach the corner." },
+        { "move": "Kd7", "note": "Black tries to walk over anyway." },
+        { "move": "h4", "note": "With the fortress fenced off, the pawn simply runs." },
+        { "move": "Kd6", "note": "Black changes plan: chase the pawn." },
+        { "move": "h5", "note": "Count it — the box from Tier 1. The king is outside." },
+        { "move": "Ke5", "note": "Still coming." },
+        { "move": "h6", "note": "Two squares from glory." },
+        { "move": "Kf4", "note": "Note what Black couldn't play: f5. The bishop's c2-f5 diagonal had the road fenced all along — that's its one real job here." },
+        { "move": "h7", "note": "Past the last checkpoint." },
+        { "move": "Kg5", "note": "Too late." },
+        { "move": "h8=Q", "note": "Queened. The fortress never formed because the king never got in — that's the whole attacking plan." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t2-wbishop-01",
+      "tier": 2,
+      "lesson": "wrong-bishop",
+      "title": "The diagonal road",
+      "fen": "K7/8/8/8/8/8/1k2B2P/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "Bishop and pawn down, king across the board. The h-pawn queens in five — and the corner is exactly five away.",
+      "solution": {
+        "moves": {
+          "Kc3": {
+            "reply": "h4",
+            "moves": {
+              "Kd4": {
+                "reply": "h5",
+                "moves": {
+                  "Ke5": {
+                    "reply": "h6",
+                    "moves": {
+                      "Kf6": {
+                        "reply": "h7",
+                        "moves": {
+                          "Kg7": { "result": "draw" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kc2": "Count it: the pawn needs five moves, and from c2 the corner is five more — one too many. Only the diagonal keeps pace.",
+          "Kb3": "Sideways wastes the tempo you don't have. The diagonal b2-c3-d4-e5-f6-g7 arrives exactly in time.",
+          "Kb1": "Away from the corner — the pawn queens unchallenged. Head for g7, along the diagonal."
+        },
+        "hints": [
+          "The pawn queens in five moves. Draw your road to g7 — you have exactly five, and only one road fits.",
+          "Kc3 — the diagonal b2-c3-d4-e5-f6-g7. Note the bishop can never block it: every square on it is dark."
+        ]
+      },
+      "explanationAfter": "You walked the dark diagonal the light bishop can never touch, arriving at g7 the move before the pawn queens. Now h8=Q is met by Kxh8 — and if White waits instead, you step into the corner and the fortress from this lesson holds forever."
+    },
+    {
+      "id": "t2-wbishop-02",
+      "tier": 2,
+      "lesson": "wrong-bishop",
+      "title": "Through b7",
+      "fen": "8/2k5/8/P1K5/5B2/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "An a-pawn and a dark-squared bishop — the wrong one for a8. The corner road has exactly one gate.",
+      "solution": {
+        "moves": {
+          "Kb7": {
+            "reply": "a6+",
+            "moves": {
+              "Kxa6": { "result": "draw" },
+              "Ka8": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kc8": "b8 belongs to the bishop — via c8 you arrive a tempo late, and Kb6 seals the door for good. Go through b7.",
+          "Kd7": "The corner road runs through b7, and only b7. Anything else lets Kb6 wall you out.",
+          "Kd8": "Too slow — Kb6 comes, the pawn gets its escort, and the corner is a memory."
+        },
+        "hints": [
+          "The bishop owns b8, his king covers b6. Which square still leads to a8?",
+          "Kb7 — the one gate. From there the corner is yours whatever White plays."
+        ]
+      },
+      "explanationAfter": "b7 was the only door the bishop and king left open. From there a8 can't be denied — and a king in the corner against the wrong bishop is a fortress no material can crack. Even grabbing the pawn works: king and bishop alone can't mate."
+    },
+    {
+      "id": "t2-wbishop-03",
+      "tier": 2,
+      "lesson": "wrong-bishop",
+      "title": "Only the check",
+      "fen": "7k/7P/6K1/8/1B6/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "This bishop is the right colour — the corner is a trap, not a fortress. But Black has no moves at all, so choose with care.",
+      "solution": {
+        "moves": {
+          "Bc3#": { "result": "win" }
+        },
+        "wrong": {
+          "Bd6": "Stalemate! Black's king has no legal move — any quiet move throws away the win. Only a check works here.",
+          "Be7": "Stalemate! Black's king has no legal move — any quiet move throws away the win. Only a check works here.",
+          "Kf7": "Kxh7! Your king was the pawn's only guard — with it gone, king and bishop can't mate: draw.",
+          "Kf6": "Kxh7! Your king was the pawn's only guard — with it gone, king and bishop can't mate: draw."
+        },
+        "hints": [
+          "Black's only squares are g8 (your pawn covers it) and g7 (your king does). What does that mean for every non-checking move?",
+          "Bc3 — the long dark diagonal: check, g7 covered twice, g8 covered by the pawn. Mate."
+        ]
+      },
+      "explanationAfter": "The right-coloured bishop turns the corner from fortress into coffin — but only by force. With Black's king out of moves, every quiet move was stalemate; the diagonal check was mate. Right bishop: win. Wrong bishop: none of this works."
+    },
+    {
+      "id": "t2-wbishop-04",
+      "tier": 2,
+      "lesson": "wrong-bishop",
+      "title": "Downhill diagonal",
+      "fen": "8/p5K1/8/7b/8/8/7k/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "draw",
+      "playerSide": "w",
+      "intro": "Black's a-pawn queens on a1, a dark square — and his bishop watches light ones. You know where your king is going.",
+      "solution": {
+        "moves": {
+          "Kf6": {
+            "reply": "a5",
+            "moves": {
+              "Ke5": {
+                "reply": "a4",
+                "moves": {
+                  "Kd4": {
+                    "reply": "a3",
+                    "moves": {
+                      "Kc3": {
+                        "reply": "a2",
+                        "moves": {
+                          "Kb2": { "result": "draw" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kf8": "Off the road — the pawn runs in five and from f8 the corner is six away. g7-f6-e5-d4-c3-b2 is the only walk that fits.",
+          "Kg8": "Away from the corner — the pawn queens with time to spare. Head down the g7-b2 diagonal.",
+          "Kh6": "Grabbing the bishop costs the race — the pawn queens while you're snacking. The corner, nothing else."
+        },
+        "hints": [
+          "His pawn needs five moves; the a1-corner zone is exactly five away. One road fits — and his bishop can't touch a single square of it.",
+          "Kf6 — the dark diagonal g7-f6-e5-d4-c3-b2, arriving just in time."
+        ]
+      },
+      "explanationAfter": "The same race as the h-pawn drill, downhill: five pushes against five dark steps the light bishop can never block. On b2 you meet a1=Q+ with Kxa1 — and if the pawn hesitates, you claim the corner and the wrong-bishop fortress claims the game."
+    }
+  ]
+}

@@ -27,6 +27,9 @@ export type LessonMeta = {
   order: number
   title: string
   tagline: string
+  // Tier scaffold stub (spec §9 milestone 4): fewer tests allowed, full
+  // lesson arrives in a later milestone.
+  scaffold?: boolean
   principles: PrincipleCard[]
   demos: Demo[]
   tests: PositionData[]

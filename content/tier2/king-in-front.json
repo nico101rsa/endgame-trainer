@@ -1,0 +1,194 @@
+{
+  "lesson": "king-in-front",
+  "tier": 2,
+  "order": 3,
+  "title": "King in front wins",
+  "tagline": "Two ranks of lead settles it — except one file",
+  "principles": [
+    {
+      "id": "t2-kfront-p1",
+      "prompt": "Your king is two ranks in front of your pawn (not a rook pawn). What's the verdict?",
+      "answer": "Won, always — whoever moves. Two ranks of lead means you can always regain the opposition when it matters."
+    },
+    {
+      "id": "t2-kfront-p2",
+      "prompt": "Your king is one rank in front of the pawn. What's the verdict?",
+      "answer": "Won only if you have the opposition — or a spare pawn move to steal it. Without either, correct defence draws."
+    },
+    {
+      "id": "t2-kfront-p3",
+      "prompt": "Your king stands on the 6th rank, in front of the pawn. What's the verdict?",
+      "answer": "Won, full stop — no opposition needed. The 6th rank is past every defence."
+    },
+    {
+      "id": "t2-kfront-p4",
+      "prompt": "Which pawn breaks all the king-in-front rules?",
+      "answer": "The rook pawn. On the a- and h-files the defender only needs the corner, and Tier 1's fortress rules take over."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t2-kfront-d1",
+      "title": "Two ranks of lead",
+      "fen": "8/8/4k3/8/4K3/8/4P3/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "Black holds the opposition — and it doesn't matter. Two ranks of lead comes with the tools to steal it back.",
+      "steps": [
+        { "move": "e3", "note": "The spare tempo, spent at the perfect moment: kings faced, and now Black must move." },
+        { "move": "Ke7", "note": "Black gives ground." },
+        { "move": "Ke5", "note": "The king advances — two ranks ahead again, opposition in hand." },
+        { "move": "Kd7", "note": "Black sidesteps, hoping to slip back in front." },
+        { "move": "Kf6", "note": "Outflank on the other side." },
+        { "move": "Ke8", "note": "Black scrambles for the queening square." },
+        { "move": "Ke6", "note": "Opposition again, three ranks ahead of the pawn now." },
+        { "move": "Kd8", "note": "Forced aside one last time." },
+        { "move": "Kf7", "note": "The king owns e8. The pawn strolls e4, e5, e6, e7, e8 — nothing can touch it." }
+      ]
+    },
+    {
+      "id": "t2-kfront-d2",
+      "title": "One rank is not enough",
+      "fen": "8/4k3/8/4K3/4P3/8/8/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "Same idea, one rank less lead — and no spare tempo. Black has the opposition, and it holds forever.",
+      "steps": [
+        { "move": "Kd5", "note": "White sidesteps, looking for a way in." },
+        { "move": "Kd7", "note": "Black mirrors. The face-off stays his." },
+        { "move": "e5", "note": "The pawn advances — but it burns White's only flexibility." },
+        { "move": "Ke7", "note": "Back to the path." },
+        { "move": "e6", "note": "One more push, king still beside the pawn, not in front." },
+        { "move": "Ke8", "note": "The saving square from Tier 1." },
+        { "move": "Kd6", "note": "White steps up at last —" },
+        { "move": "Kd8", "note": "— and Black takes the opposition. e7 will come with check, Ke8 blocks, and stalemate ends it. One rank of lead, no tempo: draw." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t2-kfront-01",
+      "tier": 2,
+      "lesson": "king-in-front",
+      "title": "Around the side",
+      "fen": "8/3k4/8/4K3/4P3/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "One rank of lead and no spare tempo — unless you act before he takes the face-off.",
+      "solution": {
+        "moves": {
+          "Kf6": {
+            "reply": "Kd6",
+            "moves": {
+              "e5+": {
+                "reply": "Kd7",
+                "moves": {
+                  "Kf7": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kd5": "Ke7 comes and bars d6, e6 and f6 together — with the face-off his, one rank of lead is only a draw.",
+          "Kf5": "Ke7 comes and bars d6, e6 and f6 together — with the face-off his, one rank of lead is only a draw."
+        },
+        "hints": [
+          "If Black reaches e7 you'll never get past. Which square puts you two ranks ahead of the pawn right now?",
+          "Kf6 — outflank before the door shuts. From two ranks ahead the win plays itself."
+        ]
+      },
+      "explanationAfter": "Kf6 turned one rank of lead into two before Black could take the face-off. From there the pawn advanced with check, and Kf7 took the shield square — e6, e7, e8 can't be stopped."
+    },
+    {
+      "id": "t2-kfront-02",
+      "tier": 2,
+      "lesson": "king-in-front",
+      "title": "Face him or lose",
+      "fen": "4k3/8/8/4K3/4P3/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "His king leads the pawn by one rank. One rank is survivable — if you take the face-off right now.",
+      "solution": {
+        "moves": {
+          "Ke7": {
+            "reply": "Kd5",
+            "moves": {
+              "Kd7": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd7": "Kf6! — he outflanks to two ranks ahead of the pawn, and that's a won game. Meet him face to face instead.",
+          "Kf7": "Kd6! — he outflanks to two ranks ahead of the pawn, and that's a won game. Meet him face to face instead.",
+          "Kd8": "Too passive — Kf6 or Kd6 comes and his lead grows to two ranks: lost.",
+          "Kf8": "Too passive — Kf6 or Kd6 comes and his lead grows to two ranks: lost."
+        },
+        "hints": [
+          "One rank of lead only wins with the opposition. Deny it to him.",
+          "Ke7 — face his king. He must move, the face-off is yours, and the straight-back defence holds."
+        ]
+      },
+      "explanationAfter": "With the face-off yours, his one rank of lead is worthless: mirror his sidesteps, drop straight back when the pawn advances, and Tier 1's stalemate finish waits at the end."
+    },
+    {
+      "id": "t2-kfront-03",
+      "tier": 2,
+      "lesson": "king-in-front",
+      "title": "Hold the line",
+      "fen": "8/8/8/4p3/4k3/8/8/4K3 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "draw",
+      "playerSide": "w",
+      "intro": "Black's king leads his pawn by one rank, marching your way. Same rules, other direction.",
+      "solution": {
+        "moves": {
+          "Ke2": {
+            "reply": "Kd4",
+            "moves": {
+              "Kd2": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd2": "Kf3! — his king reaches two ranks ahead of the pawn on the open side, and the escort can't be stopped.",
+          "Kf2": "Kd3! — his king reaches two ranks ahead of the pawn on the open side, and the escort can't be stopped.",
+          "Kd1": "Too passive — his king steps two ranks ahead of the pawn and the verdict flips to lost.",
+          "Kf1": "Too passive — his king steps two ranks ahead of the pawn and the verdict flips to lost."
+        },
+        "hints": [
+          "One rank of lead only wins with the opposition — so take the face-off from him.",
+          "Ke2 — meet him head on. He must move, and the mirror-dance holds the draw."
+        ]
+      },
+      "explanationAfter": "The rules are colour-blind: you faced his king, kept the face-off, and his single rank of lead buys nothing. Mirror every sidestep and drop straight back along the pawn's path."
+    },
+    {
+      "id": "t2-kfront-04",
+      "tier": 2,
+      "lesson": "king-in-front",
+      "title": "The exception",
+      "fen": "8/3k4/K7/8/P7/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "His king leads the pawn — the winning picture from this lesson. But it's a rook pawn.",
+      "solution": {
+        "moves": {
+          "Kc8": { "result": "draw" },
+          "Kc7": { "result": "draw" }
+        },
+        "wrong": {
+          "Kd8": "One square dawdled — Kb7 seals the corner and the pawn strolls home. The c-file zone won't wait.",
+          "Kd6": "Wrong direction — Kb7 seals the corner behind you and the a-pawn walks in.",
+          "Ke7": "Too slow — Kb7 comes and the door to c8 is shut for good."
+        },
+        "hints": [
+          "Against a rook pawn the verdict rules don't apply — Tier 1's corner fortress does. The sanctuary is the c-file, squares c7 and c8.",
+          "Kc8 or Kc7 — step into the drawing zone before Kb7 seals it."
+        ]
+      },
+      "explanationAfter": "On the a-file, king-in-front means nothing: once your king touches c8 or c7 he can never be evicted, and the pawn's escort has nowhere to stand. Always check the file before trusting the verdict."
+    }
+  ]
+}

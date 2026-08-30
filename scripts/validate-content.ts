@@ -95,8 +95,13 @@ function checkLesson(file: string, meta: LessonMeta, dirTier: number) {
     checkDemo(file, demo)
   }
 
+  // Scaffold lessons (spec §9 milestone 4: "lesson stubs and at least 2
+  // positions each") carry scaffold:true and a lower test minimum.
   const tests = meta.tests ?? []
-  if (tests.length < 4 || tests.length > 8) report(file, `${tests.length} test positions (want 4–8)`)
+  const minTests = meta.scaffold ? 2 : 4
+  if (tests.length < minTests || tests.length > 8) {
+    report(file, `${tests.length} test positions (want ${minTests}–8)`)
+  }
   for (const test of tests) checkTest(file, test, slug, meta.tier)
 }
 

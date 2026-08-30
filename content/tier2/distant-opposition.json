@@ -1,0 +1,203 @@
+{
+  "lesson": "distant-opposition",
+  "tier": 2,
+  "order": 1,
+  "title": "Distant opposition",
+  "tagline": "The face-off works from across the board",
+  "principles": [
+    {
+      "id": "t2-distopp-p1",
+      "prompt": "Kings stand on the same line with three empty squares between them. Who has the opposition?",
+      "answer": "The side NOT to move — same as the face-off. Any odd gap (one, three, five) on one line is opposition; an even gap belongs to the mover, who can make it odd."
+    },
+    {
+      "id": "t2-distopp-p2",
+      "prompt": "You hold the distant opposition and the enemy king steps toward you. How do you keep it?",
+      "answer": "Step toward him too, keeping the gap odd. Distant opposition only pays out once it shrinks to the direct face-off — close in whenever he does."
+    },
+    {
+      "id": "t2-distopp-p3",
+      "prompt": "The attacking king stands directly in front of his own pawn. What single fact decides the game?",
+      "answer": "Opposition. If the defender can face him and hold the face-off, it's a draw; if the attacker wins the face-off — or has a spare pawn move to steal it — he wins."
+    },
+    {
+      "id": "t2-distopp-p4",
+      "prompt": "Defending, why does arriving one square short — or one file to the side — lose?",
+      "answer": "Your king must cover the squares two ranks in front of the pawn. From the wrong square you cover only some of them, and the attacking king slides through the gap you left."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t2-distopp-d1",
+      "title": "Too far away to matter",
+      "fen": "4k3/8/8/8/8/4K3/4P3/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "Black's king is four ranks from the action. Watch why distance itself loses the opposition battle.",
+      "steps": [
+        {
+          "move": "Ke4",
+          "note": "Onto a key square. With the pawn on e2, the squares two ranks ahead — d4, e4, f4 — are the prize, and Black is far too late to contest them."
+        },
+        { "move": "Ke7", "note": "Black hurries back, hoping to build the face-off in time." },
+        { "move": "Kd5", "note": "White simply walks around. There is no opposition to take — Black never got close enough to stand in the way." },
+        { "move": "Kd7", "note": "Now the kings face off — but White has the spare tempo." },
+        { "move": "e4", "note": "Tier 1's trick at full range: the pawn move passes the duty to move across. Black must give way." },
+        { "move": "Ke7", "note": "Black holds the file as long as he can." },
+        { "move": "e5", "note": "The pawn joins the march under escort." },
+        { "move": "Ke8", "note": "Backing straight off — but one rank too late." },
+        { "move": "Kd6", "note": "A key square of the e5-pawn. From here it's the Tier 1 escort: the king leads, the pawn strolls home." }
+      ]
+    },
+    {
+      "id": "t2-distopp-d2",
+      "title": "The mirror hold",
+      "fen": "8/4k3/8/8/4K3/4P3/8/8 b - - 0 1",
+      "orientation": "b",
+      "intro": "Same fight, but Black arrives in time. One square holds everything.",
+      "steps": [
+        {
+          "move": "Ke6",
+          "note": "Straight into the face-off. White must move, and d5, e5 and f5 — the entry squares — are all covered."
+        },
+        { "move": "Kd4", "note": "White sidesteps, probing for a way around." },
+        { "move": "Kd6", "note": "Mirror him. The gap stays at one square, the face-off stays yours." },
+        { "move": "e4", "note": "The revived spare tempo steals the face-off — but watch what happens." },
+        { "move": "Ke6", "note": "Give ground toward the pawn's path, not away from it." },
+        { "move": "Kc5", "note": "White tries to come around the far side." },
+        { "move": "Ke7", "note": "Drop straight back on the pawn's file. This is Tier 1's straight-back defence starting one rank higher." },
+        { "move": "Kd5", "note": "White keeps pressing forward." },
+        { "move": "Kd7", "note": "Face him again — opposition." },
+        { "move": "e5", "note": "Another tempo, the last useful one." },
+        { "move": "Ke7", "note": "Back on the path." },
+        { "move": "e6", "note": "The pawn arrives — without its king in front." },
+        { "move": "Ke8", "note": "The saving square." },
+        { "move": "Kd6", "note": "White's king finally steps up —" },
+        { "move": "Kd8", "note": "— and Black takes the opposition. Now e7 comes with check and the game is a draw. Distance changed nothing: the face-off decided it." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t2-distopp-01",
+      "tier": 2,
+      "lesson": "distant-opposition",
+      "title": "Bar the gate",
+      "fen": "8/4k3/8/8/4K3/4P3/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "White's king stands at the gate. Bar all three entry squares with a single move.",
+      "solution": {
+        "moves": {
+          "Ke6": {
+            "reply": "Kd4",
+            "moves": {
+              "Kd6": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd6": "White slips to f5 — a key square of the e3-pawn — and walks it home. Only e6 covers d5, e5 and f5 at once.",
+          "Kf6": "White slips to d5 — a key square of the e3-pawn — and walks it home. Only e6 covers d5, e5 and f5 at once.",
+          "Kd7": "One rank too far back — White takes e5, two ranks in front of his pawn, and the win is his no matter what.",
+          "Kf7": "One rank too far back — White takes d5, two ranks in front of his pawn, and the win is his no matter what."
+        },
+        "hints": [
+          "White's king is one step from d5, e5 and f5 — the squares two ranks in front of his pawn. One move of yours covers all three.",
+          "Ke6 — face him with one square between. He must move, so the opposition is yours."
+        ]
+      },
+      "explanationAfter": "From e6 you cover d5, e5 and f5 and hold the face-off; when he sidesteps, you mirror him. When he revives the pawn's spare move, drop straight back on the pawn's path — the Tier 1 defence holds from there."
+    },
+    {
+      "id": "t2-distopp-02",
+      "tier": 2,
+      "lesson": "distant-opposition",
+      "title": "Slide across",
+      "fen": "8/8/3k4/8/4K3/4P3/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "Your king is a file off the pawn's path. Get in front before the door opens.",
+      "solution": {
+        "moves": {
+          "Ke6": {
+            "reply": "Kd4",
+            "moves": {
+              "Kd6": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd7": "Backing off lets White into d5, a key square of his pawn — from there the win is his no matter what.",
+          "Kc6": "The wrong direction — White takes e5, in front of his pawn, while you're a file away.",
+          "Ke7": "One rank too far back — Kd5 comes and the entry squares fall."
+        },
+        "hints": [
+          "The entry squares are d5, e5 and f5. Which of your moves guards all three?",
+          "Ke6 — step onto the pawn's path and take the opposition."
+        ]
+      },
+      "explanationAfter": "The defender's post is in front of the pawn, facing the enemy king. From e6 every entry square is covered, and the mirror-dance holds the draw."
+    },
+    {
+      "id": "t2-distopp-03",
+      "tier": 2,
+      "lesson": "distant-opposition",
+      "title": "Same rule, your turn",
+      "fen": "8/8/4p3/4k3/8/8/4K3/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "draw",
+      "playerSide": "w",
+      "intro": "Black has the king and pawn now. Defend the way you'd attack.",
+      "solution": {
+        "moves": {
+          "Ke3": {
+            "reply": "Kd5",
+            "moves": {
+              "Kd3": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd3": "You left f4 unguarded — Black steps to f4, two ranks in front of his pawn, and escorts it home.",
+          "Kf3": "You left d4 unguarded — Kd4 comes and the pawn walks in behind the king.",
+          "Kd2": "Too passive — Black's king takes any of d4, e4, f4 next move and the entry squares are gone.",
+          "Kf2": "Too passive — Black's king takes any of d4, e4, f4 next move and the entry squares are gone."
+        },
+        "hints": [
+          "His pawn's entry squares are d4, e4 and f4 — two ranks ahead of it. Guard all three.",
+          "Ke3 — face his king with one square between. He must move; the face-off is yours."
+        ]
+      },
+      "explanationAfter": "Defence is attack in a mirror: face the king, cover the three entry squares, and mirror every sidestep. Black's pawn is frozen behind its own king, so the face-off can never be stolen."
+    },
+    {
+      "id": "t2-distopp-04",
+      "tier": 2,
+      "lesson": "distant-opposition",
+      "title": "One square only",
+      "fen": "5k2/8/8/5K2/5P2/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "Every square but one loses. Find the only move that holds.",
+      "solution": {
+        "moves": {
+          "Kf7": { "result": "draw" }
+        },
+        "wrong": {
+          "Ke7": "You left g6 open — Kg6 comes, two ranks in front of the pawn, and it strolls home.",
+          "Kg7": "You left e6 open — Ke6 comes and the f-pawn is escorted in.",
+          "Ke8": "Too slow — White picks e6 or g6 next move, and your king can't cover both.",
+          "Kg8": "Too slow — White picks e6 or g6 next move, and your king can't cover both."
+        },
+        "hints": [
+          "Which square faces his king and covers e6, f6 and g6 all at once?",
+          "Kf7 — straight in front, gap of one. The opposition and the gate are both yours."
+        ]
+      },
+      "explanationAfter": "Kf7 is the whole defence: it faces White's king with the gap at one, and it covers e6, f6 and g6 — the squares two ranks in front of the pawn. Hold that post and the pawn never gets an escort."
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "lesson": "two-minors",
+  "tier": 2,
+  "order": 5,
+  "title": "Two minor pieces",
+  "tagline": "Bishops mate, knights don't, and one pair is homework",
+  "principles": [
+    {
+      "id": "t2-minors-p1",
+      "prompt": "Which pairs of minor pieces can force mate against a lone king?",
+      "answer": "Two bishops: yes, comfortably. Bishop + knight: yes, but it's one of the hardest wins in chess. Two knights: no — it can't be forced."
+    },
+    {
+      "id": "t2-minors-p2",
+      "prompt": "Two bishops against a lone king — what's the winning picture?",
+      "answer": "Bishops side by side form a diagonal wall; your king herds the enemy king to any corner, and the wall closes there. Mate always arrives in a corner."
+    },
+    {
+      "id": "t2-minors-p3",
+      "prompt": "Bishop + knight — what do you need to know at this level?",
+      "answer": "The win is real but must finish in a corner of the bishop's colour, and it can take over thirty moves. Know the verdict; don't volunteer to prove it — and don't trade into it casually."
+    },
+    {
+      "id": "t2-minors-p4",
+      "prompt": "Two knights against a lone king — verdict?",
+      "answer": "Draw. Every mating try runs through stalemate first, so it cannot be forced. If you're simplifying, keep something better than two knights."
+    },
+    {
+      "id": "t2-minors-p5",
+      "prompt": "The enemy king sits in the corner with no moves. What must you check before any quiet move?",
+      "answer": "Stalemate. No moves plus no check means the game is drawn on the spot — in these endings every quiet move needs that one-second check first."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t2-minors-d1",
+      "title": "The wall closes",
+      "fen": "6k1/8/6K1/8/8/B7/8/3B4 w - - 0 1",
+      "orientation": "w",
+      "intro": "The herding is done: Black's king is at the edge, White's king stands guard. Watch the two-bishop wall close in three moves.",
+      "steps": [
+        { "move": "Bb3+", "note": "The light bishop seals the g8-diagonal — check." },
+        { "move": "Kh8", "note": "f8 belongs to the dark bishop on a3, f7 to the king. Only the corner is left." },
+        { "move": "Bb2", "note": "The dark bishop slides onto the long diagonal: mate. Side-by-side bishops make a wall no king slips through — and every mate in this ending looks like this corner picture." }
+      ]
+    },
+    {
+      "id": "t2-minors-d2",
+      "title": "Two knights, no cigar",
+      "fen": "7k/8/6K1/4NN2/8/8/8/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "Same herding, knights instead — and the net has a hole that can't be sewn shut.",
+      "steps": [
+        { "move": "Nf7+", "note": "Check — the king is pushed toward the corner, just like the bishop ending." },
+        { "move": "Kg8", "note": "So far so good. Now White wants to cover f8 and h8 and give check, all at once…" },
+        { "move": "N5h6+", "note": "The second knight joins with check —" },
+        { "move": "Kf8", "note": "— and the king strolls out the side door. To close it, White would first need a quiet move with Black boxed in: stalemate. That's the whole story — two knights can chase forever, but the mate can't be forced." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t2-minors-01",
+      "tier": 2,
+      "lesson": "two-minors",
+      "title": "Close the wall",
+      "fen": "7k/7B/3B2K1/8/8/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "The king is cornered and out of moves — which cuts both ways. One move wins; nearly everything else is a draw.",
+      "solution": {
+        "moves": {
+          "Be5#": { "result": "win" }
+        },
+        "wrong": {
+          "Bc5": "Stalemate! Black's king has no moves — a quiet move here throws away the whole ending.",
+          "Bf4": "Stalemate! Black's king has no moves — a quiet move here throws away the whole ending.",
+          "Kf6": "Your king was guarding the h7-bishop — Kxh7, and king plus one bishop can't mate: draw.",
+          "Kf5": "Your king was guarding the h7-bishop — Kxh7, and king plus one bishop can't mate: draw.",
+          "Bg8": "Hanging the bishop — Kxg8, and one bishop can't mate: draw."
+        },
+        "hints": [
+          "Quiet moves are stalemate and king moves drop the h7-bishop. What's left?",
+          "Be5 — onto the long dark diagonal. Check, corner covered, wall closed: mate."
+        ]
+      },
+      "explanationAfter": "The corner picture: light bishop holds g8, king holds g7 and h7, and the dark bishop lands on the long diagonal with mate. Every two-bishop mate ends in this shape — and every quiet move a square away from it is stalemate."
+    },
+    {
+      "id": "t2-minors-02",
+      "tier": 2,
+      "lesson": "two-minors",
+      "title": "Any corner will do",
+      "fen": "8/8/8/8/8/1K2B3/B7/k7 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Same wall, opposite corner. The bishops don't care which corner — the picture is identical.",
+      "solution": {
+        "moves": {
+          "Bd4#": { "result": "win" }
+        },
+        "wrong": {
+          "Bc5": "Stalemate! Black's king has no moves — check for that before every quiet move in this ending.",
+          "Bf4": "Stalemate! Black's king has no moves — check for that before every quiet move in this ending.",
+          "Kc3": "Your king was guarding the a2-bishop — Kxa2, and one bishop can't mate: draw.",
+          "Kc2": "Your king was guarding the a2-bishop — Kxa2, and one bishop can't mate: draw.",
+          "Bb1": "Hanging the bishop — Kxb1, and one bishop can't mate: draw."
+        },
+        "hints": [
+          "The a2-bishop seals b1, your king seals b2 — the box is built. Which diagonal delivers the check?",
+          "Bd4 — the long dark diagonal into a1. Mate."
+        ]
+      },
+      "explanationAfter": "Rotated 180 degrees, nothing changes: one bishop and the king build the box, the other bishop sweeps the long diagonal. Learn the picture once and you own all four corners."
+    },
+    {
+      "id": "t2-minors-03",
+      "tier": 2,
+      "lesson": "two-minors",
+      "title": "The light corner",
+      "fen": "8/8/8/8/8/6K1/4B2B/7k w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "This corner is light, so the roles swap: the dark bishop builds the box, the light one strikes.",
+      "solution": {
+        "moves": {
+          "Bf3#": { "result": "win" }
+        },
+        "wrong": {
+          "Bd3": "Stalemate! Black's king has no moves — a quiet move is half a point gone.",
+          "Bc4": "Stalemate! Black's king has no moves — a quiet move is half a point gone.",
+          "Kf4": "Your king was guarding the h2-bishop — Kxh2, and one bishop can't mate: draw.",
+          "Bg1": "Hanging the bishop — Kxg1, and one bishop can't mate: draw."
+        },
+        "hints": [
+          "h1 is a light square, so the light bishop must deliver it. The dark bishop and your king already hold g1, g2 and h2.",
+          "Bf3 — down the long light diagonal into h1. Mate."
+        ]
+      },
+      "explanationAfter": "The corner's colour picks the striker: light corner, light bishop. Roles swap, picture stays — box from one bishop and the king, killing diagonal from the other."
+    },
+    {
+      "id": "t2-minors-04",
+      "tier": 2,
+      "lesson": "two-minors",
+      "title": "Four corners, one picture",
+      "fen": "k7/B2B4/1K6/8/8/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Last corner. By now your hand should move by itself — but so should the stalemate check.",
+      "solution": {
+        "moves": {
+          "Bc6#": { "result": "win" }
+        },
+        "wrong": {
+          "Be6": "Stalemate! Black's king has no moves — the quiet move is the only way to lose from here.",
+          "Bf5": "Stalemate! Black's king has no moves — the quiet move is the only way to lose from here.",
+          "Kc5": "Your king was guarding the a7-bishop — Kxa7, and one bishop can't mate: draw.",
+          "Bb8": "Hanging the bishop — Kxb8, and one bishop can't mate: draw."
+        },
+        "hints": [
+          "a8 is light: the d7-bishop strikes, everything else just has to keep standing still.",
+          "Bc6 — through b7 into a8. Mate."
+        ]
+      },
+      "explanationAfter": "Fourth corner, same three jobs: king guards the flight squares, one bishop plugs the edge, the other lands the diagonal blow. That's the whole two-bishop ending — herd to any corner and close the wall."
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "lesson": "rook-vs-pawn",
+  "tier": 5,
+  "order": 1,
+  "scaffold": true,
+  "title": "Rook vs pawn",
+  "tagline": "The race where your king is the stopwatch",
+  "principles": [
+    {
+      "id": "t5-rvp-p1",
+      "prompt": "Rook against a far-advanced pawn with king support. What decides the game?",
+      "answer": "Your own king's distance. Close enough to join the attack: win. Too far: the rook alone can only trade itself for the pawn — draw."
+    },
+    {
+      "id": "t5-rvp-p2",
+      "prompt": "Pawn on its 7th, enemy king beside it, your king one file away. Name the winning pattern.",
+      "answer": "Check from the side to force his king in front of the pawn, post your king on the adjacent file — and promotion runs into a back-rank mate."
+    },
+    {
+      "id": "t5-rvp-p3",
+      "prompt": "Why does the fresh queen sometimes die the move it's born?",
+      "answer": "In the corner she stands behind her own king: a rook check along the back rank can't be captured (the king blocks the queen's path) and can't be blocked. Mate."
+    },
+    {
+      "id": "t5-rvp-p4",
+      "prompt": "Your king is too far to help the rook. What can the rook still guarantee?",
+      "answer": "The draw: harass from behind and the side — the enemy king can shield the pawn or escort it forward, never both — and give the rook for the pawn at the last moment."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t5-rvp-d1",
+      "title": "Too far to win, close enough to draw",
+      "fen": "R7/8/8/7K/8/8/pk6/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "White's king is on another continent. Watch what the rook can — and can't — do alone.",
+      "steps": [
+        { "move": "Rb8+", "note": "Drive the king in front of its pawn." },
+        { "move": "Ka1", "note": "Into the corner — and note the trap: the pawn is now stuck behind its own king." },
+        { "move": "Rh8", "note": "Careful! Keeping the b-file pinned would be stalemate. Step aside and wait." },
+        { "move": "Kb2", "note": "Out again, ready to step off and promote…" },
+        { "move": "Rb8+", "note": "…and straight back in front. This is the whole story:" },
+        { "move": "Kc2", "note": "This time the king steps away from the pawn —" },
+        { "move": "Ra8", "note": "— and the rook instantly hits it from behind." },
+        { "move": "Kb2", "note": "So the king returns, and the dance repeats forever. Shield or escort, never both: draw. Bring the white king two files closer and this same position is a win — that's the test." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t5-rvp-01",
+      "tier": 5,
+      "lesson": "rook-vs-pawn",
+      "title": "The promotion trap",
+      "fen": "8/8/8/8/2K5/6R1/pk6/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Same pawn, but your king made it to c4 — close enough to spring the trap.",
+      "solution": {
+        "moves": {
+          "Rg2+": {
+            "reply": "Kb1",
+            "moves": {
+              "Kb3": {
+                "reply": "a1=Q",
+                "moves": {
+                  "Rg1#": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Rb3+": "Kc2! slips around the rook and nothing stops a1=Q. Check along the rank — it pins his king to the pawn's fate.",
+          "Ra3": "Kxa3 — the rook was undefended. Check first, approach second.",
+          "Kb4": "a1=Q arrives — you had exactly one tempo and spent it on a quiet move."
+        },
+        "hints": [
+          "Force his king onto the promotion path first, then bring your own king to b3.",
+          "Rg2+, and after Kb1, Kb3! — now a1=Q walks into Rg1 mate: the queen is trapped behind her own king."
+        ]
+      },
+      "explanationAfter": "The full pattern: the rank check forced his king in front of the pawn, Kb3 took the guard post, and the brand-new queen on a1 couldn't stop Rg1# — her own king blocks every escape and the capture alike. King close: win."
+    },
+    {
+      "id": "t5-rvp-02",
+      "tier": 5,
+      "lesson": "rook-vs-pawn",
+      "title": "Trap at the top",
+      "fen": "8/6KP/1r6/5k2/8/8/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "White's h-pawn is one step from a new queen — and your king made it to f5 in time.",
+      "solution": {
+        "moves": {
+          "Rb7+": {
+            "reply": "Kg8",
+            "moves": {
+              "Kg6": {
+                "reply": "h8=Q",
+                "moves": {
+                  "Rb8#": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Rg6+": "Kf7! and the pawn queens anyway — the file check let his king slip out sideways. Check along the rank instead.",
+          "Rh6": "Kxh6 — the rook was undefended. Check first, approach second.",
+          "Ke6": "h8=Q comes — the pawn was one move from glory and you looked away."
+        },
+        "hints": [
+          "Mirror of the last drill: rank check, then your king to g6.",
+          "Rb7+, Kg8 forced, then Kg6! — h8=Q is answered by Rb8 mate."
+        ]
+      },
+      "explanationAfter": "Same trap upside down: the rank check put his king on g8, Kg6 sealed the flight squares, and the newborn queen on h8 watched Rb8# arrive — blocked from capturing by her own king. Learn it once, use it from either side."
+    }
+  ]
+}

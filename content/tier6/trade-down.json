@@ -1,0 +1,116 @@
+{
+  "lesson": "trade-down",
+  "tier": 6,
+  "order": 1,
+  "scaffold": true,
+  "title": "Trading down",
+  "tagline": "Read the pawn ending, then burn the boats",
+  "principles": [
+    {
+      "id": "t6-trade-p1",
+      "prompt": "You can trade the last pieces into a pure pawn ending. What must happen first?",
+      "answer": "Read the pawn ending's verdict to the very end — opposition, key squares, square rule. Trade only when the verdict is already yours: a pawn ending has no second chances."
+    },
+    {
+      "id": "t6-trade-p2",
+      "prompt": "Why is trading rooks often the cleanest way to convert an extra pawn?",
+      "answer": "With rooks on, a defending king in front of the pawn holds Philidor forever. Remove the rooks and the same position is often a won king-and-pawn ending you already know how to play."
+    },
+    {
+      "id": "t6-trade-p3",
+      "prompt": "What makes pawn endings computable when rook endings aren't?",
+      "answer": "No pieces means no perpetual checks, fortresses or swindles. Opposition, key squares and the square rule decide everything — and those are exact."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t6-trade-d1",
+      "title": "Two verdicts, one position",
+      "fen": "8/3rk3/8/4K3/4P3/8/8/3R4 w - - 0 1",
+      "orientation": "w",
+      "intro": "With rooks on: Philidor territory, drawish. Without them: a Tier 2 win. Watch the whole conversion.",
+      "steps": [
+        { "move": "Rxd7+", "note": "The trade is forced onto Black — the rook was defended, the check compels the recapture." },
+        { "move": "Kxd7", "note": "And now it's a king-and-pawn ending you've already solved: king one rank ahead, opponent not yet in front." },
+        { "move": "Kf6", "note": "The Tier 2 move: outflank to two ranks ahead before the door shuts." },
+        { "move": "Kd6", "note": "Black hurries over —" },
+        { "move": "e5+", "note": "— and the pawn advances with tempo." },
+        { "move": "Kd7", "note": "Driven back." },
+        { "move": "Kf7", "note": "The shield square. From here the pawn cannot be touched." },
+        { "move": "Kd8", "note": "Black can only watch." },
+        { "move": "e6", "note": "March." },
+        { "move": "Kc7", "note": "Still watching." },
+        { "move": "e7", "note": "No check — the good sign, as always." },
+        { "move": "Kb6", "note": "Too far, too late." },
+        { "move": "e8=Q", "note": "The verdict was computed before Rxd7+ was played. That's the whole skill: read first, trade second." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t6-trade-01",
+      "tier": 6,
+      "lesson": "trade-down",
+      "title": "Burn the boats",
+      "fen": "8/3rk3/8/4K3/4P3/8/8/3R4 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Rooks glare at each other down the d-file. One future is a Philidor draw, the other a Tier 2 win. Pick.",
+      "solution": {
+        "moves": {
+          "Rxd7+": {
+            "reply": "Kxd7",
+            "moves": {
+              "Kf6": { "result": "win" }
+            }
+          }
+        },
+        "wrong": {
+          "Rd6": "Rxd6! and you can't take back — Kxd6 would put your king next to his. The rook is simply lost.",
+          "Rd2": "Rxd2 — every square on the d-file hangs: his rook has a king behind it, yours never did.",
+          "Ra1": "Keep the rooks on and his king parks in front of the pawn — Philidor holds rook endings like this forever. The pawn ending is the one that's won: trade!",
+          "Rh1": "Keep the rooks on and his king parks in front of the pawn — Philidor holds rook endings like this forever. The pawn ending is the one that's won: trade!",
+          "Kf5": "Rxd1! Your rook was hanging all along — the only move that saves it also wins the game."
+        },
+        "hints": [
+          "Compute the pawn ending first: after the trade your king stands one rank ahead of the pawn with his king not yet in front. Tier 2 says that's winning — if you outflank at once.",
+          "Rxd7+ — the check forces the recapture. Then Kf6, exactly as in 'Around the side'."
+        ]
+      },
+      "explanationAfter": "Rxd7+ converted a drawish rook ending into a computed win: after Kxd7 you played Kf6 — two ranks ahead before the door shut, the Tier 2 picture. The trade wasn't brave, it was arithmetic."
+    },
+    {
+      "id": "t6-trade-02",
+      "tier": 6,
+      "lesson": "trade-down",
+      "title": "Same arithmetic, other side",
+      "fen": "4r3/8/8/3p4/3k4/8/3KR3/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "Your pawn, your king in front, his rook praying you keep the pieces on. Do the sum.",
+      "solution": {
+        "moves": {
+          "Rxe2+": {
+            "reply": "Kxe2",
+            "moves": {
+              "Kc3": { "result": "win" }
+            }
+          }
+        },
+        "wrong": {
+          "Re3": "Rxe3! and you can't recapture — Kxe3 is king-next-to-king. A whole rook, donated.",
+          "Re7": "Rxe7 — every square on the e-file hangs: your rook has no king behind it, his does.",
+          "Ra8": "With rooks on, his king sits in front of your pawn and Philidor holds forever. The pawn ending is the one you win — force it with the trade.",
+          "Kc4": "Rxe8! Your rook was hanging all along — the capture that saves it also wins the game."
+        },
+        "hints": [
+          "After the trade your king stands one rank ahead of the d-pawn, his king not yet in front — Tier 2 arithmetic says won, if you outflank immediately.",
+          "Rxe2+, and after Kxe2 play Kc3 — the outflank, southbound."
+        ]
+      },
+      "explanationAfter": "The mirror sum: Rxe2+ forced Kxe2, and Kc3 claimed two ranks of lead before White's king could plant itself in front of the pawn. Piece endings offer draws; computed pawn endings deliver."
+    }
+  ]
+}
