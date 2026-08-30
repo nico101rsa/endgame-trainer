@@ -1,0 +1,202 @@
+{
+  "lesson": "king-opposition",
+  "tier": 1,
+  "order": 2,
+  "title": "King opposition",
+  "tagline": "Whoever must move gives way",
+  "principles": [
+    {
+      "id": "t1-opposition-p1",
+      "prompt": "Kings face each other with one empty square between them. Who has the opposition?",
+      "answer": "The side NOT to move. They can hold the face-off; the mover must give way."
+    },
+    {
+      "id": "t1-opposition-p2",
+      "prompt": "What does having the opposition actually let you do?",
+      "answer": "Force the enemy king to step aside, then advance into the squares he gave up."
+    },
+    {
+      "id": "t1-opposition-p3",
+      "prompt": "You're escorting a pawn. What leads — king or pawn?",
+      "answer": "The king. A pawn move is a spare tempo: save it for the moment it hands the face-off back to your opponent."
+    },
+    {
+      "id": "t1-opposition-p4",
+      "prompt": "You're defending against king + pawn. Where does your king belong?",
+      "answer": "In the pawn's path, mirroring the enemy king — when he slides sideways, you slide with him."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t1-opposition-d1",
+      "title": "Win the stand-off",
+      "fen": "8/8/4k3/8/4K3/4P3/8/8 b - - 0 1",
+      "orientation": "w",
+      "intro": "Kings face off on the e-file. Black must move — White has the opposition.",
+      "steps": [
+        { "move": "Kd6", "note": "Black gives way. Watch White's king walk into the gap." },
+        { "move": "Kf5", "note": "Not the pawn — the king. White advances on the side Black left open." },
+        { "move": "Ke7", "note": "Black hurries back to block the path." },
+        { "move": "Ke5", "note": "White retakes the opposition. Black must give way again." },
+        { "move": "Kd7", "note": "The same story, one rank higher." },
+        { "move": "Kf6", "note": "The king walks in. The pawn will stroll home behind him." }
+      ]
+    },
+    {
+      "id": "t1-opposition-d2",
+      "title": "The spare tempo",
+      "fen": "8/4k3/8/4K3/8/8/4P3/8 w - - 0 1",
+      "orientation": "w",
+      "intro": "Kings face off, but it's White to move — the wrong way around. The pawn fixes that.",
+      "steps": [
+        {
+          "move": "e3",
+          "note": "The kings haven't moved, yet everything changed: now Black must give way. A quiet pawn move passed the obligation across."
+        },
+        { "move": "Kd7", "note": "Black steps aside —" },
+        { "move": "Kf6", "note": "— and White's king goes around the other side. From here the e-pawn walks home." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t1-opposition-01",
+      "tier": 1,
+      "lesson": "king-opposition",
+      "title": "Face-off on the d-file",
+      "fen": "8/3k4/8/8/3K4/3P4/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "White's king wants to march up the board ahead of his pawn. Hold him back.",
+      "solution": {
+        "moves": {
+          "Kd6": {
+            "reply": "Ke4",
+            "moves": {
+              "Ke6": {
+                "reply": "Kd4",
+                "moves": {
+                  "Kd6": { "result": "draw" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Ke6": "White outflanks on the far side with Kc5 and gets in front of his pawn. Meet him head-on down the d-file instead.",
+          "Kc6": "White outflanks on the far side with Ke5 and gets in front of his pawn. Meet him head-on down the d-file instead.",
+          "Kd8": "Too passive — White plays Kd5, in front of his pawn, and wins. Block him now, while the face-off is still yours to take."
+        },
+        "hints": [
+          "White's king is headed for c5, d5 or e5. One move bars all three routes at once.",
+          "Kd6 — take the opposition, directly facing his king."
+        ]
+      },
+      "explanationAfter": "Face the king and keep facing it. Each time White sidesteps, you mirror him — he can never reach the squares in front of his pawn, and the pawn can't promote without its king leading the way."
+    },
+    {
+      "id": "t1-opposition-02",
+      "tier": 1,
+      "lesson": "king-opposition",
+      "title": "Find the face-off",
+      "fen": "8/3k4/8/8/2K5/2P5/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "The kings aren't facing each other yet. Get in White's way before his king advances.",
+      "solution": {
+        "moves": {
+          "Kc6": {
+            "reply": "Kb4",
+            "moves": {
+              "Kb6": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kd6": "White slips past with Kb5 and escorts the pawn from in front. Face his king on the c-file.",
+          "Kc7": "One square short — White takes c5, in front of his pawn, and wins. Step all the way up to c6.",
+          "Kd8": "White walks to b5 or c5 unchallenged. Get your king into his path now."
+        },
+        "hints": [
+          "His king is on c4. Which square faces it with one square between?",
+          "Kc6 — take the opposition before his king moves up."
+        ]
+      },
+      "explanationAfter": "You found the face-off and kept it: when his king slid to b4, yours slid to b6. As long as you hold the opposition, his king stays behind his pawn — and a pawn without its king in front can't win."
+    },
+    {
+      "id": "t1-opposition-03",
+      "tier": 1,
+      "lesson": "king-opposition",
+      "title": "Take the opposition",
+      "fen": "8/8/4k3/8/4K3/4P3/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "White to play. Use the opposition to escort the pawn.",
+      "solution": {
+        "moves": {
+          "Kd4": {
+            "reply": "Kd6",
+            "moves": {
+              "e4": { "reply": "Ke6", "moves": { "Kc5": { "result": "win" } } }
+            }
+          },
+          "Kf4": {
+            "reply": "Kf6",
+            "moves": {
+              "e4": { "reply": "Ke6", "moves": { "Kg5": { "result": "win" } } }
+            }
+          }
+        },
+        "wrong": {
+          "Kd3": "Retreating gives up the opposition.",
+          "Kf3": "Retreating gives up the opposition — Black's king walks forward."
+        },
+        "hints": [
+          "Which square puts your king directly in front of Black's king with one square between?",
+          "Kd4 or Kf4 both take the opposition."
+        ]
+      },
+      "explanationAfter": "Whenever the kings face each other with one square between, the side NOT to move has the opposition."
+    },
+    {
+      "id": "t1-opposition-04",
+      "tier": 1,
+      "lesson": "king-opposition",
+      "title": "Lead with the king",
+      "fen": "8/8/4p3/4k3/8/4K3/8/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "win",
+      "playerSide": "b",
+      "intro": "Black to play. Your king leads, the pawn follows — same trick, other direction.",
+      "solution": {
+        "moves": {
+          "Kd5": {
+            "reply": "Kd3",
+            "moves": {
+              "e5": { "reply": "Ke3", "moves": { "Kc4": { "result": "win" } } }
+            }
+          },
+          "Kf5": {
+            "reply": "Kf3",
+            "moves": {
+              "e5": { "reply": "Ke3", "moves": { "Kg4": { "result": "win" } } }
+            }
+          }
+        },
+        "wrong": {
+          "Kd6": "Retreating gives up the opposition — White's king walks forward.",
+          "Kf6": "Retreating gives up the opposition — White's king walks forward."
+        },
+        "hints": [
+          "Your pawn can't outrun the king — your own king must clear the road first.",
+          "Kd5 or Kf5 both take the opposition."
+        ]
+      },
+      "explanationAfter": "Sidestep, force White's king to commit, then push the pawn at the moment the pawn move itself returns the opposition to you. King first, pawn second."
+    }
+  ]
+}

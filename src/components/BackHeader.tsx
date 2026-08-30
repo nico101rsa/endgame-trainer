@@ -1,0 +1,22 @@
+import { Link } from 'react-router-dom'
+
+export function BackHeader({ to, label }: { to: string; label: string }) {
+  return (
+    <div className="flex items-center gap-3 px-1">
+      <Link to={to} aria-label="Back" className="flex min-h-11 min-w-11 items-center">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-6 w-6"
+        >
+          <path d="M14.5 5.5L8 12l6.5 6.5" />
+        </svg>
+      </Link>
+      <div className="text-sm font-extrabold uppercase tracking-wide">{label}</div>
+    </div>
+  )
+}

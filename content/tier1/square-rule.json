@@ -1,0 +1,187 @@
+{
+  "lesson": "square-rule",
+  "tier": 1,
+  "order": 1,
+  "title": "The square rule",
+  "tagline": "Draw the box, skip the counting",
+  "principles": [
+    {
+      "id": "t1-square-p1",
+      "prompt": "A pawn is running and your king is chasing. How do you know, without counting moves, whether you catch it?",
+      "answer": "Draw the square from the pawn to its promotion rank. If your king can step inside the square on its move, it catches the pawn."
+    },
+    {
+      "id": "t1-square-p2",
+      "prompt": "The runaway pawn is still on its starting square. What changes when you draw the box?",
+      "answer": "Its first step can be two — draw the square as if the pawn were already one rank further on."
+    },
+    {
+      "id": "t1-square-p3",
+      "prompt": "Why does it matter whose move it is in a pawn race?",
+      "answer": "If the pawn moves first, the square shrinks a rank before you can step in. Check the box you'll face after the push."
+    }
+  ],
+  "demos": [
+    {
+      "id": "t1-square-d1",
+      "title": "Inside the box",
+      "fen": "8/8/4k3/8/7P/8/1K6/8 b - - 0 1",
+      "orientation": "b",
+      "intro": "The h4-pawn's square runs h4–d4–d8–h8. Black's king stands inside it — watch the catch run on rails.",
+      "steps": [
+        { "move": "Kf5", "note": "The king moves along the pawn's path, staying inside the box." },
+        { "move": "h5", "note": "The pawn runs; the square shrinks to h5–e5–e8–h8. The king is still inside." },
+        { "move": "Kg5", "note": "Gaining on it." },
+        { "move": "h6", "note": "One more push —" },
+        { "move": "Kxh6", "note": "— caught. Inside the square at every step means the pawn never escapes." }
+      ]
+    },
+    {
+      "id": "t1-square-d2",
+      "title": "One file too far",
+      "fen": "8/8/2k5/8/7P/8/1K6/8 w - - 0 1",
+      "orientation": "b",
+      "intro": "Same pawn, but the king starts on c6 — and it's White's move.",
+      "steps": [
+        {
+          "move": "h5",
+          "note": "The pawn moves first. The square is now h5–e5–e8–h8; from c6 the king can only reach the d-file — one file outside."
+        },
+        { "move": "Kd5", "note": "Chasing hard, but the box has already moved on." },
+        { "move": "h6", "note": "New square: f6–f8–h8. Still one file ahead of the king." },
+        { "move": "Ke6", "note": "The gap never closes." },
+        { "move": "h7", "note": "One square from glory." },
+        { "move": "Kf7", "note": "The king arrives — a move too late to lay a finger on h8." },
+        { "move": "h8=Q", "note": "Queens. Whose move it was decided this race on move one." }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "t1-square-01",
+      "tier": 1,
+      "lesson": "square-rule",
+      "title": "Into the box",
+      "fen": "8/8/8/3k3P/8/8/1K6/8 b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "The h-pawn is running and your king is the only thing that can stop it. Step into its square.",
+      "solution": {
+        "moves": {
+          "Ke5": { "result": "draw" },
+          "Ke6": { "result": "draw" }
+        },
+        "wrong": {
+          "Ke4": "It looks like the chasing diagonal, but count the box: after h6 the square is f6–h8 and from e4 you can't reach it. Enter level with the pawn or ahead of it — e5 or e6.",
+          "Kd6": "Too slow a road — after h6 the square is f6–h8, and from d6 you'd still be outside it. Step into the square now, at e5 or e6.",
+          "Kd4": "Backwards out of the race — the pawn runs h6, h7, h8 while you're still on the d-file."
+        },
+        "hints": [
+          "Draw the square: h5–e5–e8–h8. Which of your moves step inside it?",
+          "Ke5 or Ke6 — both enter the square, and once you're in, the catch is automatic."
+        ]
+      },
+      "explanationAfter": "From d5 only e5 and e6 step inside the h-pawn's square. Once you're in you stay in — every push shrinks the box, but your king is always within it, and the pawn is caught."
+    },
+    {
+      "id": "t1-square-02",
+      "tier": 1,
+      "lesson": "square-rule",
+      "title": "Don't chase — push",
+      "fen": "8/8/2k5/6P1/8/8/8/1K6 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "win",
+      "playerSide": "w",
+      "intro": "Your king can't help the g-pawn from back there. Does the pawn need help?",
+      "solution": {
+        "moves": {
+          "g6": {
+            "reply": "Kd6",
+            "moves": {
+              "g7": {
+                "reply": "Ke7",
+                "moves": {
+                  "g8=Q": { "result": "win" }
+                }
+              }
+            }
+          }
+        },
+        "wrong": {
+          "Kc2": "Your king is a spectator in this race — while it strolls, Black steps into the square with Kd6 and the pawn is caught. Push!",
+          "Kb2": "Your king is a spectator in this race — while it strolls, Black steps into the square with Kd6 and the pawn is caught. Push!"
+        },
+        "hints": [
+          "The square of the g5-pawn runs g5–d5–d8–g8. Black's king is on c6 — what happens to the box if the pawn moves first?",
+          "g6 — the square shrinks to e6–g8 and Black is locked out for good."
+        ]
+      },
+      "explanationAfter": "After g6 the box is three by three — e6 to g8 — and Black's king was never getting in. When the square rule says your pawn wins the race, it needs no escort: every king move you make is a rank gifted to the defence."
+    },
+    {
+      "id": "t1-square-03",
+      "tier": 1,
+      "lesson": "square-rule",
+      "title": "The two-step",
+      "fen": "8/8/8/7k/8/8/1P6/7K b - - 0 1",
+      "sideToMove": "b",
+      "goal": "draw",
+      "playerSide": "b",
+      "intro": "The b-pawn hasn't moved yet. Count its square carefully before you commit.",
+      "solution": {
+        "moves": {
+          "Kg4": { "result": "draw" },
+          "Kg5": { "result": "draw" },
+          "Kg6": { "result": "draw" }
+        },
+        "wrong": {
+          "Kh4": "You counted from b2 — but a pawn's first step can be two. Count from b3: the square's edge is the g-file, and h4 isn't on it. After b4 you never catch up.",
+          "Kh6": "You counted from b2 — but a pawn's first step can be two. Count from b3: the square's edge is the g-file, and h6 isn't on it. After b4 you never catch up."
+        },
+        "hints": [
+          "The pawn is on its home square, so its first move can be two. Where does the box really start?",
+          "Count from b3: the square runs b3–g3–g8–b8. Step onto the g-file — g4, g5 or g6 all do it."
+        ]
+      },
+      "explanationAfter": "A pawn on its starting square gets a free extra rank — always draw the box from one square ahead of it. From b3 the square just reaches the g-file, so any step onto that file catches the pawn; both waiting moves on the h-file lose the race by a single tempo."
+    },
+    {
+      "id": "t1-square-04",
+      "tier": 1,
+      "lesson": "square-rule",
+      "title": "Step into the box",
+      "fen": "8/7k/8/8/2p3K1/8/8/8 w - - 0 1",
+      "sideToMove": "w",
+      "goal": "draw",
+      "playerSide": "w",
+      "intro": "Black's pawn is off and running. Your king is the only thing that can stop it.",
+      "solution": {
+        "moves": {
+          "Kf4": {
+            "reply": "c3",
+            "moves": {
+              "Ke3": { "result": "draw" }
+            }
+          },
+          "Kf3": {
+            "reply": "c3",
+            "moves": {
+              "Ke3": { "result": "draw" },
+              "Ke2": { "result": "draw" }
+            }
+          }
+        },
+        "wrong": {
+          "Kf5": "Right file, wrong rank — the pawn's box runs c4–f4 down to the 1st rank, and f5 is above it. After c3 you're two moves adrift. Enter at f3 or f4.",
+          "Kg3": "One square sideways isn't one square closer — you're still outside the box, and after c3 it shrinks away from you. Step INTO the square: f3 or f4."
+        },
+        "hints": [
+          "The square of the c4-pawn runs c4–f4–f1–c1. You're one step outside it.",
+          "Kf3 or Kf4 — either one steps inside; after that you stay inside all the way to c1."
+        ]
+      },
+      "explanationAfter": "f3 and f4 are the only doors into the pawn's square — remember the box has a floor as well as a wall, so f5 is no better than g3. Once inside you stay inside: each push shrinks the box with you still in it, and the pawn is met on c1's doorstep."
+    }
+  ]
+}

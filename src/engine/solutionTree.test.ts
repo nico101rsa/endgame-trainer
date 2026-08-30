@@ -1,9 +1,30 @@
 import { describe, expect, it } from 'vitest'
 import { applyMove, startAttempt, validateSolution } from './solutionTree'
 import type { Solution } from './solutionTree'
-import { oppositionPosition } from '../content/positions'
 
-const { fen, solution } = oppositionPosition
+// The spec §5 sample position, inlined so the engine tests don't depend on
+// the content pipeline (the same position ships as t1-opposition-03).
+const fen = '8/8/4k3/8/4K3/4P3/8/8 w - - 0 1'
+const solution: Solution = {
+  moves: {
+    Kd4: {
+      reply: 'Kd6',
+      moves: { e4: { reply: 'Ke6', moves: { Kc5: { result: 'win' } } } },
+    },
+    Kf4: {
+      reply: 'Kf6',
+      moves: { e4: { reply: 'Ke6', moves: { Kg5: { result: 'win' } } } },
+    },
+  },
+  wrong: {
+    Kd3: 'Retreating gives up the opposition.',
+    Kf3: "Retreating gives up the opposition — Black's king walks forward.",
+  },
+  hints: [
+    "Which square puts your king directly in front of Black's king with one square between?",
+    'Kd4 or Kf4 both take the opposition.',
+  ],
+}
 
 describe('applyMove', () => {
   it('walks a full correct line to the result', () => {
