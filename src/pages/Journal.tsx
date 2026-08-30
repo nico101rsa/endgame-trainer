@@ -2,8 +2,8 @@ import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BackHeader } from '../components/BackHeader'
 import { journalToPgn } from '../journal/pgn'
-import { exportJournal, importJournal } from '../journal/store'
-import { tallies } from '../journal/store'
+import { exportJournal, importJournal, loadJournal, tallies } from '../journal/store'
+import { reconcileImport } from '../sync/engine'
 import { useJournal } from '../journal/useJournal'
 import type { GameRecord } from '../journal/types'
 import { resultLabel } from '../journal/types'
@@ -221,7 +221,11 @@ export function Journal() {
               const file = e.target.files?.[0]
               if (!file) return
               try {
+                const previousIds = loadJournal().games.map((g) => g.id)
                 importJournal(await file.text())
+                // The import is the desired journal: dropped games become
+                // sync deletions, re-imported ones must not stay tombstoned.
+                reconcileImport(previousIds, loadJournal().games.map((g) => g.id))
                 setMessage('Journal imported.')
               } catch (err) {
                 setMessage(err instanceof Error ? err.message : 'Import failed.')

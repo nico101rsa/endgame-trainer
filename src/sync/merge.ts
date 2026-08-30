@@ -47,7 +47,9 @@ function itemFromRemote(row: RemoteProgressRow): ProgressItem {
   }
 }
 
-export function rowFromItem(id: string, item: ProgressItem): Omit<RemoteProgressRow, 'updated_at'> & { updated_at?: string } {
+// Single owner of the row shape: always emits updated_at, falling back to
+// the caller's clock for pre-sync items that were never stamped.
+export function rowFromItem(id: string, item: ProgressItem, fallbackNow: string): RemoteProgressRow {
   return {
     item_id: id,
     kind: item.kind,
@@ -58,7 +60,7 @@ export function rowFromItem(id: string, item: ProgressItem): Omit<RemoteProgress
     lapses: item.lapses,
     last_seen: item.lastSeen || null,
     next_due: item.nextDue || null,
-    ...(item.updatedAt ? { updated_at: item.updatedAt } : {}),
+    updated_at: item.updatedAt ?? fallbackNow,
   }
 }
 
@@ -121,6 +123,9 @@ export function mergeGames(
     if (tombstone) {
       if (ts(tombstone) > ts(row.updated_at)) {
         pushDeletes.push(row.id)
+        // The delete also applies locally — e.g. a JSON import may have
+        // re-added a copy of the game after the tombstone was recorded.
+        byId.delete(row.id)
       } else {
         // The game was edited elsewhere after our delete — resurrect it.
         byId.set(row.id, row.data)

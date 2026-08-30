@@ -6,7 +6,7 @@ import type { BoardTheme, PieceSet } from '../settings/store'
 import { saveSettings } from '../settings/store'
 import { useSettings } from '../settings/useSettings'
 import { supabase } from '../sync/client'
-import { syncNow } from '../sync/engine'
+import { syncNow, wipeRemoteProgress } from '../sync/engine'
 import { useSyncAccount } from '../sync/useSyncAccount'
 
 function Choice({
@@ -71,8 +71,18 @@ export function Settings() {
     if (fileRef.current) fileRef.current.value = ''
   }
 
-  function reset() {
+  async function reset() {
     if (!window.confirm('Reset ALL progress? The review schedule cannot be recovered.')) return
+    // Signed-in resets must clear the server rows too, or the next sync
+    // pulls everything straight back.
+    const wipe = await wipeRemoteProgress()
+    if (!wipe.ok) {
+      setMessage({
+        tone: 'error',
+        text: `Couldn't clear the synced copy (${wipe.message}) — reset cancelled so it doesn't reappear on the next sync.`,
+      })
+      return
+    }
     resetProgress()
     setMessage({ tone: 'ok', text: 'Progress reset.' })
   }

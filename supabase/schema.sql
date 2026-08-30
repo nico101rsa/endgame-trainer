@@ -22,11 +22,14 @@ create table lesson_reads (
 );
 
 create table games (
-  id text primary key,
+  -- Composite key: game ids are deterministic per-date strings
+  -- (g-YYYY-MM-DD-NN), so two accounts would collide on a bare id pk.
+  id text not null,
   user_id uuid references auth.users not null,
   data jsonb not null,           -- full game object from the OTB addendum
   updated_at timestamptz not null default now(),
-  deleted boolean not null default false
+  deleted boolean not null default false,
+  primary key (user_id, id)
 );
 
 alter table progress enable row level security;

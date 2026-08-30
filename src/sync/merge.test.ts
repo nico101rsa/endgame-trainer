@@ -96,8 +96,8 @@ describe('mergeProgress', () => {
     expect(pushReads).toEqual(['here'])
   })
 
-  it('rowFromItem round-trips the SRS fields', () => {
-    const row = rowFromItem('x', item(T1))
+  it('rowFromItem round-trips the SRS fields and stamps unstamped items', () => {
+    const row = rowFromItem('x', item(T1), T2)
     expect(row).toMatchObject({
       item_id: 'x',
       kind: 'position',
@@ -106,6 +106,7 @@ describe('mergeProgress', () => {
       last_seen: '2026-08-30',
       updated_at: T1,
     })
+    expect(rowFromItem('y', item(undefined), T2).updated_at).toBe(T2)
   })
 })
 
@@ -149,5 +150,14 @@ describe('mergeGames', () => {
     expect(out.pushDeletes).toEqual(['gone'])
     expect(out.merged.games.map((g) => g.id)).toEqual(['kept'])
     expect(out.clearedTombstones.sort()).toEqual(['kept', 'unseen'])
+  })
+
+  it('a winning tombstone also removes a lingering local copy of the game', () => {
+    // e.g. a JSON import re-added the game after the delete was recorded.
+    const local = { ...emptyJournal(), games: [game('gone', T1)] }
+    const out = mergeGames(local, [remote('gone', T1)], { gone: T2 })
+    expect(out.pushDeletes).toEqual(['gone'])
+    expect(out.merged.games).toEqual([])
+    expect(out.pushGames).toEqual([])
   })
 })
