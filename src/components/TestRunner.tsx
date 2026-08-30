@@ -7,6 +7,9 @@ import { applyMove, startAttempt } from '../engine/solutionTree'
 import type { Cursor } from '../engine/solutionTree'
 import type { Grade } from '../progress/srs'
 import { gradePosition, updateProgress } from '../progress/store'
+import { piecesFor, squareStylesFor } from '../board/theme'
+import { useSettings } from '../settings/useSettings'
+import { sounds } from '../sound'
 
 type Status = 'playing' | 'replying' | 'showing' | 'solved'
 
@@ -47,6 +50,7 @@ export function TestRunner({
   onGraded?: (grade: Grade) => void
   onNext?: () => void
 }) {
+  const settings = useSettings()
   const gameRef = useRef(new Chess(position.fen))
   const [fen, setFen] = useState(position.fen)
   const [cursor, setCursor] = useState<Cursor>(() => startAttempt(position.solution))
@@ -57,6 +61,7 @@ export function TestRunner({
   const [solutionShown, setSolutionShown] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null)
+  const [sanInput, setSanInput] = useState('')
 
   const gradedRef = useRef(false)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
@@ -89,6 +94,7 @@ export function TestRunner({
     setFeedback(null)
     setSelected(null)
     setLastMove(null)
+    setSanInput('')
   }
 
   function showSolution() {
@@ -110,26 +116,40 @@ export function TestRunner({
         const move = game.move(san)
         setFen(game.fen())
         setLastMove({ from: move.from, to: move.to })
-        if (i === line.length - 1) setStatus('solved')
+        sounds.reply()
+        if (i === line.length - 1) {
+          setStatus('solved')
+          sounds.solved()
+        }
       }, SOLUTION_STEP_MS * (i + 1))
     })
   }
 
-  function tryPlayerMove(from: string, to: string): boolean {
+  // Accepts a from/to pair (tap or drag) or a SAN string (keyboard entry,
+  // spec §7 accessibility). Returns whether a legal move was played.
+  function attempt(input: string | { from: string; to: string }): boolean {
     if (status !== 'playing') return false
     const game = gameRef.current
     let move
     try {
-      move = game.move({ from, to, promotion: 'q' })
+      move = typeof input === 'string' ? game.move(input) : game.move({ ...input, promotion: 'q' })
     } catch {
+      if (typeof input === 'string') {
+        setFeedback({
+          tone: 'info',
+          text: `"${input}" isn't a legal move here — use algebraic notation like Kd4, e5 or Rb4.`,
+        })
+      }
       return false
     }
     setSelected(null)
+    setSanInput('')
 
     const outcome = applyMove(cursor, move.san)
     if (outcome.kind === 'wrong' || outcome.kind === 'unknown') {
       game.undo()
       setWrongMoves((n) => n + 1)
+      sounds.wrong()
       setFeedback({
         tone: 'wrong',
         text:
@@ -141,11 +161,13 @@ export function TestRunner({
     }
 
     setFen(game.fen())
-    setLastMove({ from, to })
+    setLastMove({ from: move.from, to: move.to })
     setFeedback(null)
+    sounds.move()
 
     if (outcome.kind === 'complete') {
       setStatus('solved')
+      sounds.solved()
       recordGrade(wrongMoves > 0 ? 'again' : hintsUsed > 0 ? 'hard' : 'good')
       return true
     }
@@ -157,6 +179,7 @@ export function TestRunner({
         const replyMove = game.move(reply)
         setFen(game.fen())
         setLastMove({ from: replyMove.from, to: replyMove.to })
+        sounds.reply()
         setStatus('playing')
       }, REPLY_DELAY_MS)
     }
@@ -172,7 +195,7 @@ export function TestRunner({
         .moves({ square: selected as never, verbose: true })
         .some((m) => m.to === square)
       if (legal) {
-        tryPlayerMove(selected, square)
+        attempt({ from: selected, to: square })
         return
       }
     }
@@ -203,8 +226,8 @@ export function TestRunner({
   }, [selected, lastMove, fen]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="px-1">
+    <div className="flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,1fr)_300px] md:items-start md:gap-6">
+      <div className="px-1 md:col-span-2">
         <div className="font-display text-4xl uppercase leading-none">
           {playerLabel} to {position.goal}
           <span className="text-red">.</span>
@@ -216,12 +239,12 @@ export function TestRunner({
           options={{
             position: fen,
             boardOrientation: position.playerSide === 'w' ? 'white' : 'black',
-            darkSquareStyle: { backgroundColor: '#4a4232' },
-            lightSquareStyle: { backgroundColor: '#f7efdd' },
+            ...squareStylesFor(settings.boardTheme),
+            pieces: piecesFor(settings.pieceSet),
             squareStyles,
             allowDragging: status === 'playing',
             onPieceDrop: ({ sourceSquare, targetSquare }) =>
-              targetSquare ? tryPlayerMove(sourceSquare, targetSquare) : false,
+              targetSquare ? attempt({ from: sourceSquare, to: targetSquare }) : false,
             onSquareClick,
             animationDurationInMs: 150,
           }}
@@ -310,6 +333,28 @@ export function TestRunner({
               Restart
             </button>
           </div>
+          <form
+            className="flex gap-2"
+            onSubmit={(e) => {
+              e.preventDefault()
+              const san = sanInput.trim()
+              if (san) attempt(san)
+            }}
+          >
+            <input
+              value={sanInput}
+              onChange={(e) => setSanInput(e.target.value)}
+              placeholder="Or type a move: Kd4"
+              aria-label="Type a move in algebraic notation"
+              className="min-h-[44px] min-w-0 flex-1 border-[3px] border-ink bg-panel px-3 text-[14px] font-bold placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-red"
+            />
+            <button
+              type="submit"
+              className="min-h-[44px] border-[3px] border-ink px-4 text-[12px] font-extrabold uppercase tracking-wide"
+            >
+              Play
+            </button>
+          </form>
           <button
             onClick={showSolution}
             className="min-h-[44px] border-[3px] border-ink text-[13px] font-extrabold uppercase tracking-wide text-muted"

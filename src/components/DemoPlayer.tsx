@@ -2,10 +2,13 @@ import { useMemo, useState } from 'react'
 import { Chess } from 'chess.js'
 import { Chessboard } from 'react-chessboard'
 import type { Demo } from '../content/types'
+import { piecesFor, squareStylesFor } from '../board/theme'
+import { useSettings } from '../settings/useSettings'
 
 // Step-through demo board (spec §6): both sides' moves are scripted; the
 // player pages through them with Prev/Next and reads the note per move.
 export function DemoPlayer({ demo }: { demo: Demo }) {
+  const settings = useSettings()
   const [step, setStep] = useState(0) // 0 = initial position, N = after N moves
 
   const frames = useMemo(() => {
@@ -38,8 +41,8 @@ export function DemoPlayer({ demo }: { demo: Demo }) {
           options={{
             position: frame.fen,
             boardOrientation: demo.orientation === 'w' ? 'white' : 'black',
-            darkSquareStyle: { backgroundColor: '#4a4232' },
-            lightSquareStyle: { backgroundColor: '#f7efdd' },
+            ...squareStylesFor(settings.boardTheme),
+            pieces: piecesFor(settings.pieceSet),
             squareStyles,
             allowDragging: false,
             animationDurationInMs: 150,

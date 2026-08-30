@@ -4,12 +4,14 @@
 
 **State:** Milestones 1–4 done. M1–M3 merged to `main` (PRs #1–#3); M4 on branch `claude/endgame-trainer-continue-n1ooa0`. 29/29 vitest, `npm run validate` clean (13 lessons, 44 test positions, 117 ids), build clean, Playwright-verified (all 6 tiers on Home with Preview badges, tier-2 solves + wrong-move feedback, scaffold lesson pages, breakthrough sequence). Tier 2 fully authored (5 lessons / 20 tests / 9 demos / 21 cards); Tiers 3–6 each scaffolded with one `scaffold: true` stub lesson (Lucena, breakthrough, rook vs pawn, trade-down) carrying 2 hand-verified tests + demos. Home groups all tiers with progress bars.
 
-**The next step — Milestone 5, polish + deploy:**
-1. GitHub Pages workflow (`vite.config.ts` needs `base: '/endgame-trainer/'`; HashRouter already Pages-safe) + web manifest (Add to Home Screen).
-2. Custom red/cream piece set (design canvas settled on red pieces; react-chessboard v5 `pieces` option).
-3. Settings: board theme, piece set toggle, sound on/off (page exists, progress-data controls already there).
-4. Mobile/desktop layout pass (board left / text right on wide screens, spec §7) + keyboard SAN entry (spec §7 accessibility).
-5. Playwright smoke tests checked in (specs exist ad hoc in session scratchpads — formalize under /e2e).
+**The next step — Milestone 7, the journal (docs/SPEC_ADDENDUM_OTB_DATABASE.md):**
+Milestone 6 (Supabase sync) is blocked on credentials from Nico, so the journal comes first — it's local-first and independent.
+
+**M5 shipped (same session):**
+- Deploy: `.github/workflows/deploy.yml` (Pages, auto-enablement) + `ci.yml` (lint/validate/test/build/e2e); `vite base: './'` so one build works at any path; web manifest + SVG icon (Add to Home Screen).
+- Poster piece set (`src/board/theme.tsx`): red vs ink filled glyphs with cream halo, SVG-text so they scale free; board themes parchment/slate/tournament; both selectable in Settings alongside a sound toggle (`src/settings/`, WebAudio blips in `src/sound.ts`, no assets).
+- TestRunner: SAN keyboard entry (spec §7 accessibility), desktop two-column layout (board left, controls right at `md:`), move/wrong/solved sounds.
+- Checked-in e2e: `npm run e2e` (e2e/smoke.mjs, playwright-core against `vite preview`; 14 checks). CI installs Chromium; locally `npx playwright-core install chromium` once or set `PW_CHROMIUM`.
 
 **M4 design decisions:**
 - Tier-2 test positions are anchored to *provable* theory only: the key-square table (pawn ranks 2–4 → two ranks ahead; 5th/6th → directly ahead), the key-square theorem (reach one = win regardless of move), Tier-1-verified fortress/escort patterns, mate/stalemate positions machine-checked with chess.js (rules only — legality/mate/stalemate detection is not an engine).
@@ -45,13 +47,14 @@
 2. ~~**Content pipeline** — JSON/MD loading, validation script, Tier 1 fully authored.~~ ✅ 2026-08-30 (PR #2)
 3. ~~**Progress + SRS** — localStorage, Anki SM-2, review queue (principle cards + positions), export/import.~~ ✅ 2026-08-30
 4. ~~**Tier 2 authored; Tiers 3–6 scaffolded.**~~ ✅ 2026-08-30
-5. **Polish + deploy** — mobile pass, custom red/cream pieces, settings, "Show solution" button, GitHub Pages workflow, PWA manifest, Playwright smoke tests.
+5. ~~**Polish + deploy** — mobile pass, custom red/cream pieces, settings, "Show solution" button, GitHub Pages workflow, PWA manifest, Playwright smoke tests.~~ ✅ 2026-08-30
 6. **Sync** — Supabase magic-link auth, local-first merge (spec §11).
 7. **Journal** — game entry/viewer/list/export (addendum).
 8. **Journal ↔ trainer links.**
 
 ## History
 
+- **2026-08-30 (late-2)** — Milestone 5 built: GitHub Pages deploy + CI workflows, relative-base build, PWA manifest + icon, poster piece set (red/ink glyphs), three board themes, sound (WebAudio, no assets), settings UI for all of it, SAN keyboard entry, desktop board-left layout, checked-in Playwright smoke suite (14 checks, all green against the production build).
 - **2026-08-30 (late)** — Milestone 4 built: Tier 2 fully authored (distant opposition, key squares, king-in-front verdicts, wrong bishop, two minors — 20 tests, all hand-verified against key-square theory, mates machine-checked for legality with chess.js rules). Tiers 3–6 scaffolded (`scaffold: true` stubs: Lucena bridge, three-pawn breakthrough, rook-vs-pawn promotion trap, trade-into-pawn-endings — 8 more verified tests). Home generalized to all tiers with Preview badges. Validator caught 7 authoring errors.
 - **2026-08-30 (eve)** — Milestone 3 built: SM-2 SRS (`src/progress/`, 17 new unit tests), localStorage v2 store with export/import/reset, self-grading TestRunner + "Show solution" button, review-mode principle cards with Anki buttons, `/review` queue with session summary, Home Continue card + due count + progress bars, minimal `/settings`. Browser-verified end-to-end with Playwright.
 - **2026-08-30 (pm)** — Milestone 2 merged (PR #2): CONTENT_GUIDE.md, build-time content loader, `validate-content` script, Tier 1 fully authored (square rule, king opposition, K+P vs K, rook pawn draws — 16 tests / 8 demos / 13 cards). New Lesson + Test pages, demo player, flip cards, next-position flow. All content hand-verified against endgame theory; validator caught one illegal-move authoring error. Browser-verified through full play-throughs including promotion and black-orientation boards.

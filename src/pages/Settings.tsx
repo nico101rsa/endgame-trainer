@@ -1,10 +1,36 @@
 import { useRef, useState } from 'react'
 import { BackHeader } from '../components/BackHeader'
+import { BOARD_THEMES } from '../board/theme'
 import { exportProgress, importProgress, resetProgress } from '../progress/store'
+import type { BoardTheme, PieceSet } from '../settings/store'
+import { saveSettings } from '../settings/store'
+import { useSettings } from '../settings/useSettings'
+
+function Choice({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`min-h-[44px] flex-1 border-[3px] border-ink px-2 text-[12px] font-extrabold uppercase tracking-wide ${
+        active ? 'bg-ink text-cream' : ''
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
 
 // Milestone 3 scope: the progress-data controls (export / import / reset).
 // Board themes, piece sets and sound land with the polish milestone.
 export function Settings() {
+  const settings = useSettings()
   const [message, setMessage] = useState<{ tone: 'ok' | 'error'; text: string } | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -44,6 +70,54 @@ export function Settings() {
         <h1 className="font-display text-4xl uppercase leading-none">
           Settings<span className="text-red">.</span>
         </h1>
+      </div>
+
+      <div className="mt-8 text-[11px] font-extrabold uppercase tracking-widest text-muted">
+        Board theme
+      </div>
+      <div className="mt-2 flex gap-2">
+        {(Object.keys(BOARD_THEMES) as BoardTheme[]).map((theme) => (
+          <Choice
+            key={theme}
+            active={settings.boardTheme === theme}
+            onClick={() => saveSettings({ boardTheme: theme })}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <span
+                className="inline-block h-3 w-3 border border-ink"
+                style={{ backgroundColor: BOARD_THEMES[theme].dark }}
+              />
+              {BOARD_THEMES[theme].label}
+            </span>
+          </Choice>
+        ))}
+      </div>
+
+      <div className="mt-6 text-[11px] font-extrabold uppercase tracking-widest text-muted">
+        Pieces
+      </div>
+      <div className="mt-2 flex gap-2">
+        {(['poster', 'classic'] as PieceSet[]).map((set) => (
+          <Choice
+            key={set}
+            active={settings.pieceSet === set}
+            onClick={() => saveSettings({ pieceSet: set })}
+          >
+            {set === 'poster' ? 'Poster (red)' : 'Classic'}
+          </Choice>
+        ))}
+      </div>
+
+      <div className="mt-6 text-[11px] font-extrabold uppercase tracking-widest text-muted">
+        Sound
+      </div>
+      <div className="mt-2 flex gap-2">
+        <Choice active={settings.sound} onClick={() => saveSettings({ sound: true })}>
+          On
+        </Choice>
+        <Choice active={!settings.sound} onClick={() => saveSettings({ sound: false })}>
+          Off
+        </Choice>
       </div>
 
       <div className="mt-8 text-[11px] font-extrabold uppercase tracking-widest text-muted">
@@ -87,8 +161,8 @@ export function Settings() {
       )}
 
       <div className="mt-8 text-[13px] leading-snug text-muted">
-        Importing replaces the stored schedule with the file's. Board themes, piece
-        sets and sound arrive with the polish milestone.
+        Importing replaces the stored review schedule with the file's. Appearance and
+        sound settings live on this device and aren't part of the export.
       </div>
     </div>
   )
