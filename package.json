@@ -13,6 +13,7 @@
     "e2e": "node e2e/smoke.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
     "chess.js": "^1.4.0",
     "react": "^19.2.8",
     "react-chessboard": "^5.12.1",

@@ -9,10 +9,16 @@ export function emptyJournal(): JournalData {
 // --- pure core -------------------------------------------------------------
 
 export function upsertGame(data: JournalData, game: GameRecord): JournalData {
+  const stamped = { ...game, updatedAt: game.updatedAt ?? new Date().toISOString() }
   const games = data.games.some((g) => g.id === game.id)
-    ? data.games.map((g) => (g.id === game.id ? game : g))
-    : [...data.games, game]
+    ? data.games.map((g) => (g.id === game.id ? stamped : g))
+    : [...data.games, stamped]
   return { ...data, games }
+}
+
+// Editing call sites stamp the change time so sync's last-write-wins works.
+export function touchGame(game: GameRecord): GameRecord {
+  return { ...game, updatedAt: new Date().toISOString() }
 }
 
 export function removeGame(data: JournalData, id: string): JournalData {

@@ -6,7 +6,8 @@ import { BackHeader } from '../components/BackHeader'
 import { piecesFor, squareStylesFor } from '../board/theme'
 import { getLesson } from '../content/loader'
 import { movesFromRecord } from '../journal/pgn'
-import { removeGame, updateJournal, upsertGame } from '../journal/store'
+import { removeGame, touchGame, updateJournal, upsertGame } from '../journal/store'
+import { noteGameDeleted } from '../sync/engine'
 import { useJournal } from '../journal/useJournal'
 import { resultLabel } from '../journal/types'
 import { useSettings } from '../settings/useSettings'
@@ -54,7 +55,9 @@ export function JournalGame() {
     const moveComments = { ...game!.notes.moveComments }
     if (text) moveComments[String(step)] = text
     else delete moveComments[String(step)]
-    updateJournal((d) => upsertGame(d, { ...game!, notes: { ...game!.notes, moveComments } }))
+    updateJournal((d) =>
+      upsertGame(d, touchGame({ ...game!, notes: { ...game!.notes, moveComments } })),
+    )
     setNoteDraft('')
   }
 
@@ -245,6 +248,7 @@ export function JournalGame() {
           onClick={() => {
             if (!window.confirm('Delete this game from the journal?')) return
             updateJournal((d) => removeGame(d, game.id))
+            noteGameDeleted(game.id)
             navigate('/journal', { replace: true })
           }}
           className="min-h-[48px] flex-1 border-[3px] border-red font-extrabold uppercase tracking-wide text-red"

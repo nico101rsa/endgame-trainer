@@ -43,6 +43,8 @@ export type GameRecord = {
   endgameType: string
   linkedLessons: string[]
   tags: string[]
+  // Sync (spec §11): last-write-wins per game. Absent on pre-sync data.
+  updatedAt?: string
 }
 
 export type JournalData = {

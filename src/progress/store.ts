@@ -14,6 +14,9 @@ export type ProgressItem = SrsState & {
   // Positions only — lifetime counters, independent of the SRS state.
   attempts?: number
   solved?: number
+  // Sync (spec §11): last-write-wins per row. Absent on pre-sync data —
+  // treated as older than any timestamped row.
+  updatedAt?: string
 }
 
 export type ProgressData = {
@@ -30,7 +33,13 @@ export function emptyProgress(): ProgressData {
 
 function reviewed(prev: SrsState, kind: ItemKind, grade: Grade, today: string): ProgressItem {
   const next = review(prev, grade)
-  return { kind, ...next, lastSeen: today, nextDue: addDays(today, next.intervalDays) }
+  return {
+    kind,
+    ...next,
+    lastSeen: today,
+    nextDue: addDays(today, next.intervalDays),
+    updatedAt: new Date().toISOString(),
+  }
 }
 
 // A test-position attempt grades itself (spec §5): clean = good, hinted =
@@ -70,7 +79,13 @@ export function markLessonRead(
   const items = { ...data.items }
   for (const id of cardIds) {
     if (!items[id]) {
-      items[id] = { kind: 'principle', ...newItemState(), lastSeen: today, nextDue: today }
+      items[id] = {
+        kind: 'principle',
+        ...newItemState(),
+        lastSeen: today,
+        nextDue: today,
+        updatedAt: new Date().toISOString(),
+      }
     }
   }
   return { ...data, items, lessons: { ...data.lessons, [slug]: { readAt: today } } }

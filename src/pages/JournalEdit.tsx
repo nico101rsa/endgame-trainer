@@ -13,6 +13,7 @@ import {
   newGameId,
   saveDraft,
   suggestions,
+  touchGame,
   updateJournal,
   upsertGame,
 } from '../journal/store'
@@ -176,7 +177,7 @@ export function JournalEdit() {
         .map((t) => t.trim())
         .filter(Boolean),
     }
-    updateJournal((d) => upsertGame(d, record))
+    updateJournal((d) => upsertGame(d, touchGame(record)))
     if (isNew) clearDraft()
     navigate(`/journal/${record.id}`, { replace: true })
   }
