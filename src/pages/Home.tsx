@@ -114,7 +114,13 @@ export function Home() {
         </div>
       ))}
 
-      <div className="mt-10 flex justify-center">
+      <div className="mt-10 flex justify-center gap-6">
+        <Link
+          to="/journal"
+          className="text-[11px] font-extrabold uppercase tracking-widest text-red underline underline-offset-2"
+        >
+          Game journal
+        </Link>
         <Link
           to="/settings"
           className="text-[11px] font-extrabold uppercase tracking-widest text-muted underline underline-offset-2"

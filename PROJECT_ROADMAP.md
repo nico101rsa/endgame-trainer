@@ -4,8 +4,9 @@
 
 **State:** Milestones 1–4 done. M1–M3 merged to `main` (PRs #1–#3); M4 on branch `claude/endgame-trainer-continue-n1ooa0`. 29/29 vitest, `npm run validate` clean (13 lessons, 44 test positions, 117 ids), build clean, Playwright-verified (all 6 tiers on Home with Preview badges, tier-2 solves + wrong-move feedback, scaffold lesson pages, breakthrough sequence). Tier 2 fully authored (5 lessons / 20 tests / 9 demos / 21 cards); Tiers 3–6 each scaffolded with one `scaffold: true` stub lesson (Lucena, breakthrough, rook vs pawn, trade-down) carrying 2 hand-verified tests + demos. Home groups all tiers with progress bars.
 
-**The next step — Milestone 7, the journal (docs/SPEC_ADDENDUM_OTB_DATABASE.md):**
-Milestone 6 (Supabase sync) is blocked on credentials from Nico, so the journal comes first — it's local-first and independent.
+**The next step — Milestone 6, Supabase sync (spec §11). BLOCKED on Nico:** needs either a Supabase personal access token (`sbp_...`, Account → Access Tokens — lets the assistant create the project and pull keys itself) or a created project's URL + anon key. Everything else has shipped.
+
+**M7+M8 shipped (same session):** the OTB journal per the addendum — `src/journal/` (types with the no-rating rule encoded, PGN in/out with Elo/engine-tag stripping, localStorage store, draft autosave, suggestion pools, descriptive tallies; 9 unit tests), pages `/journal` (list, filters, W-D-L tallies, JSON/PGN export + JSON import), `/journal/new` + edit (board play-in or PGN paste, smart defaults, autocomplete datalists, post-mortem form, tags, linked lessons with endgame-type word-match suggestions), `/journal/:id` viewer (step-through with per-move notes added inline). Lesson pages show "My games" for linked games. Browser-verified: PGN paste with rating tags stripped, move notes, tallies, smart defaults, draft restore, suggestions ordering.
 
 **M5 shipped (same session):**
 - Deploy: `.github/workflows/deploy.yml` (Pages, auto-enablement) + `ci.yml` (lint/validate/test/build/e2e); `vite base: './'` so one build works at any path; web manifest + SVG icon (Add to Home Screen).
@@ -49,11 +50,12 @@ Milestone 6 (Supabase sync) is blocked on credentials from Nico, so the journal 
 4. ~~**Tier 2 authored; Tiers 3–6 scaffolded.**~~ ✅ 2026-08-30
 5. ~~**Polish + deploy** — mobile pass, custom red/cream pieces, settings, "Show solution" button, GitHub Pages workflow, PWA manifest, Playwright smoke tests.~~ ✅ 2026-08-30
 6. **Sync** — Supabase magic-link auth, local-first merge (spec §11).
-7. **Journal** — game entry/viewer/list/export (addendum).
-8. **Journal ↔ trainer links.**
+7. ~~**Journal** — game entry/viewer/list/export (addendum).~~ ✅ 2026-08-30
+8. ~~**Journal ↔ trainer links.**~~ ✅ 2026-08-30
 
 ## History
 
+- **2026-08-30 (late-3)** — Milestones 7+8 built: the OTB game journal (entry via board or sanitized PGN paste, viewer with inline per-move notes, filterable list with descriptive tallies, JSON+PGN export, drafts, smart defaults, recall-over-retyping autocomplete) and the journal↔trainer links (linked lessons on games with endgame-type suggestions; "My games" on lessons). Rating tags stripped on import per the addendum's hard rule; caught and fixed a chess.js placeholder-header bug ("????.??.??" dates).
 - **2026-08-30 (late-2)** — Milestone 5 built: GitHub Pages deploy + CI workflows, relative-base build, PWA manifest + icon, poster piece set (red/ink glyphs), three board themes, sound (WebAudio, no assets), settings UI for all of it, SAN keyboard entry, desktop board-left layout, checked-in Playwright smoke suite (14 checks, all green against the production build).
 - **2026-08-30 (late)** — Milestone 4 built: Tier 2 fully authored (distant opposition, key squares, king-in-front verdicts, wrong bishop, two minors — 20 tests, all hand-verified against key-square theory, mates machine-checked for legality with chess.js rules). Tiers 3–6 scaffolded (`scaffold: true` stubs: Lucena bridge, three-pawn breakthrough, rook-vs-pawn promotion trap, trade-into-pawn-endings — 8 more verified tests). Home generalized to all tiers with Preview badges. Validator caught 7 authoring errors.
 - **2026-08-30 (eve)** — Milestone 3 built: SM-2 SRS (`src/progress/`, 17 new unit tests), localStorage v2 store with export/import/reset, self-grading TestRunner + "Show solution" button, review-mode principle cards with Anki buttons, `/review` queue with session summary, Home Continue card + due count + progress bars, minimal `/settings`. Browser-verified end-to-end with Playwright.
