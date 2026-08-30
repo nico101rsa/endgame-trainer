@@ -1,9 +1,11 @@
+import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { BackHeader } from '../components/BackHeader'
 import { DemoPlayer } from '../components/DemoPlayer'
 import { Markdown } from '../components/Markdown'
 import { PrincipleCard } from '../components/PrincipleCard'
 import { getLesson } from '../content/loader'
+import { loadProgress, markLessonRead, updateProgress } from '../progress/store'
 
 function SectionHeading({ children }: { children: string }) {
   return (
@@ -16,6 +18,16 @@ function SectionHeading({ children }: { children: string }) {
 export function Lesson() {
   const { slug } = useParams()
   const lesson = slug ? getLesson(slug) : undefined
+
+  // First read enters the lesson's principle cards into the review queue
+  // (spec §5). Skip the write entirely on re-reads.
+  useEffect(() => {
+    if (!lesson || loadProgress().lessons[lesson.lesson]) return
+    updateProgress((data, today) =>
+      markLessonRead(data, lesson.lesson, lesson.principles.map((c) => c.id), today),
+    )
+  }, [lesson])
+
   if (!lesson) {
     return (
       <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-6 pt-12">
