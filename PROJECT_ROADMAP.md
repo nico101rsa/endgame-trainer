@@ -2,24 +2,34 @@
 
 ## Next session (Session Handoff)
 
-**State:** Milestones 1–4 done. M1–M3 merged to `main` (PRs #1–#3); M4 on branch `claude/endgame-trainer-continue-n1ooa0`. 29/29 vitest, `npm run validate` clean (13 lessons, 44 test positions, 117 ids), build clean, Playwright-verified (all 6 tiers on Home with Preview badges, tier-2 solves + wrong-move feedback, scaffold lesson pages, breakthrough sequence). Tier 2 fully authored (5 lessons / 20 tests / 9 demos / 21 cards); Tiers 3–6 each scaffolded with one `scaffold: true` stub lesson (Lucena, breakthrough, rook vs pawn, trade-down) carrying 2 hand-verified tests + demos. Home groups all tiers with progress bars.
+**State: every milestone (1–8) is built and merged to `main`.** Working tree clean, 47/47 vitest, `npm run validate` clean (13 lessons / 44 test positions / 117 ids), `npm run build` clean, `npm run e2e` 14/14 against the production build, CI green on `main`. The app is feature-complete per the spec + addendum: six tiers (Tier 1–2 fully authored, 3–6 scaffolded), SM-2 review queue, settings (themes / poster pieces / sound / export-import-reset), the OTB game journal with trainer links, and a sync engine that ships disabled until Supabase keys exist.
 
-**The next step — finish Milestone 6 (Supabase sync, spec §11). BLOCKED on Nico:** everything is built and unit-tested; what's missing is a real Supabase project. Provide either a personal access token (`sbp_...`, Supabase dashboard → Account → Access Tokens — lets the assistant create the project, apply `supabase/schema.sql`, and set the keys itself) or create a project manually, run `supabase/schema.sql` in its SQL editor, enable email OTP auth, and put the Project URL + anon key into `.env` (see `.env.example`). Then verify the first magic-link sign-in and a two-device merge live — the engine has only been tested against pure-merge unit tests, never a live backend.
+### The only two things left — both need a human at a browser
 
-**M6 scaffolding shipped (same session):**
-- `supabase/schema.sql` (spec §11 verbatim: progress / lesson_reads / games with RLS), `.env.example`.
-- `src/sync/`: `client.ts` (null when unconfigured — the app is a full no-op without env keys), `merge.ts` (pure LWW-per-row merge with union'd lesson reads and soft-delete tombstones; 8 unit tests), `engine.ts` (pull → merge → push, debounced background sync on store events, offline retry via pending flag, tombstone lifecycle), `useSyncAccount.ts`.
-- Progress items and journal games now carry `updatedAt` stamps (optional field — old exports still import).
-- Settings → Account & sync: magic-link sign-in, signed-in address, Sync now, last-synced, queued-writes indicator, or a "not configured" explainer.
-- Journal deletes record tombstones so they propagate instead of resurrecting.
+1. **Turn on GitHub Pages (one click).** https://github.com/nico101rsa/endgame-trainer/settings/pages → **Source: GitHub Actions**. Then re-run the "Deploy to GitHub Pages" workflow (Actions tab → Run workflow, or push any commit to `main`). The site lands at https://nico101rsa.github.io/endgame-trainer/.
+   *Why not automated:* creating the Pages site needs repo-admin rights that GitHub never grants a workflow token — the first deploy failed with `Create Pages site failed: Resource not accessible by integration`. Everything else in the deploy is automatic and already proven (build, artifact upload).
+   *Fallback that works this second:* the `gh-pages` branch already holds a built snapshot; setting Source = "Deploy from a branch → gh-pages" serves it immediately. It's a manual snapshot, not auto-updating — prefer the Actions source and delete the `gh-pages` branch once it's live.
 
-**M7+M8 shipped (same session):** the OTB journal per the addendum — `src/journal/` (types with the no-rating rule encoded, PGN in/out with Elo/engine-tag stripping, localStorage store, draft autosave, suggestion pools, descriptive tallies; 9 unit tests), pages `/journal` (list, filters, W-D-L tallies, JSON/PGN export + JSON import), `/journal/new` + edit (board play-in or PGN paste, smart defaults, autocomplete datalists, post-mortem form, tags, linked lessons with endgame-type word-match suggestions), `/journal/:id` viewer (step-through with per-move notes added inline). Lesson pages show "My games" for linked games. Browser-verified: PGN paste with rating tags stripped, move notes, tallies, smart defaults, draft restore, suggestions ordering.
+2. **Create the Supabase project and hand over two strings.** Follow `docs/SYNC_SETUP.md` (5 minutes: create project → paste `supabase/schema.sql` in the SQL editor → set auth Site/Redirect URLs → copy the **Project URL** and **anon key**). Put them in `.env` locally, and in `.env.production` for the deployed build; both are public-safe by design (RLS protects the rows) — the `service_role` key is never used here.
+   *Why not automated:* the cloud session's egress proxy blocks `api.supabase.com` and `*.supabase.co` outright, so no token would have helped.
+   *Then:* the sync engine has only ever been exercised by pure-merge unit tests. Live-verify: magic-link sign-in, solve a position on device A, sign in on device B and confirm it appears; delete a journal game on one device and confirm it doesn't resurrect on the other.
 
-**M5 shipped (same session):**
-- Deploy: `.github/workflows/deploy.yml` (Pages, auto-enablement) + `ci.yml` (lint/validate/test/build/e2e); `vite base: './'` so one build works at any path; web manifest + SVG icon (Add to Home Screen).
-- Poster piece set (`src/board/theme.tsx`): red vs ink filled glyphs with cream halo, SVG-text so they scale free; board themes parchment/slate/tournament; both selectable in Settings alongside a sound toggle (`src/settings/`, WebAudio blips in `src/sound.ts`, no assets).
-- TestRunner: SAN keyboard entry (spec §7 accessibility), desktop two-column layout (board left, controls right at `md:`), move/wrong/solved sounds.
-- Checked-in e2e: `npm run e2e` (e2e/smoke.mjs, playwright-core against `vite preview`; 14 checks). CI installs Chromium; locally `npx playwright-core install chromium` once or set `PW_CHROMIUM`.
+### Running it on a Mac
+
+```bash
+git clone https://github.com/nico101rsa/endgame-trainer.git
+cd endgame-trainer && npm install
+npm run dev                       # http://localhost:5173
+npm test && npm run validate      # unit tests + content validator
+npx playwright-core install chromium && npm run e2e   # browser smoke suite (once)
+```
+Node ≥ 23 (the validator relies on native TS type-stripping). Vite uses :5173 — on macOS :5000 is taken by AirPlay.
+
+### Ideas parked for later (nothing is blocking them)
+
+- Flesh out the Tier 3–6 scaffolds into full lessons (each currently has one stub lesson with 2 tests; the spec §4 curriculum lists 5 topics per tier).
+- `chunkSizeWarningLimit`: the bundle is ~500 kB (one chunk) — code-splitting the journal routes would quieten the build warning.
+- Two pre-existing oxlint warnings in `TestRunner`'s `squareStyles` memo (reads `gameRef` during render) and one fast-refresh note in `board/theme.tsx`. Harmless; tidy if touching that code.
 
 **M4 design decisions:**
 - Tier-2 test positions are anchored to *provable* theory only: the key-square table (pawn ranks 2–4 → two ranks ahead; 5th/6th → directly ahead), the key-square theorem (reach one = win regardless of move), Tier-1-verified fortress/escort patterns, mate/stalemate positions machine-checked with chess.js (rules only — legality/mate/stalemate detection is not an engine).
@@ -36,7 +46,9 @@
 - `npm run validate` (`scripts/validate-content.ts`, plain Node ≥23 type-stripping) — legality, termination, demo replay, counts, id uniqueness. Run it after any content edit; it catches real authoring errors (caught an illegal king move during M2).
 - `src/components/TestRunner.tsx` — remounted per position via `key`; react-chessboard v5 API (single `options` prop). Grades itself once per visit and records via the store.
 - `src/components/DemoPlayer.tsx`, `PrincipleCard.tsx`, `Markdown.tsx` (minimal: `##`, `**bold**`, `-` lists only — single `*em*` NOT supported).
-- Routes: `/`, `/lesson/:slug`, `/test/:id`, `/review`, `/settings` (HashRouter for GitHub Pages).
+- Routes: `/`, `/lesson/:slug`, `/test/:id`, `/review`, `/settings`, `/journal`, `/journal/new`, `/journal/:id`, `/journal/:id/edit` (HashRouter for GitHub Pages).
+- `src/journal/` — `types.ts` (no-rating rule encoded), `pgn.ts` (import strips Elo/rating tags and `[%eval]`; export embeds player comments as `{}`), `store.ts` (pure transforms + localStorage + drafts + tallies), `useJournal.ts`.
+- `src/sync/` — `client.ts` (null when unconfigured), `merge.ts` (pure LWW per row, lesson-read union, tombstones), `engine.ts` (pull→merge→push, debounced, account-scoped, offline retry), `useSyncAccount.ts`. `initSync()` runs from `main.tsx` and no-ops without env keys.
 
 **Gotchas:**
 - No engine ever, no ratings in the journal — extends to tests and dev deps.
@@ -44,10 +56,12 @@
 - Some trees end early with `result` once the technique is demonstrated (recognition drills, e.g. square-rule entries) — the SRS "clean solve" grade must treat a 1-move solve as legitimate.
 - Browser-pane testing: hidden-tab timer throttling delays the 450ms scripted reply — taps during `replying` are ignored by design. Not a bug; wait ≥1.5s between synthetic taps.
 - macOS: port 5000 taken by AirPlay; Vite 5173 fine. Preview server name: `endgame-trainer`.
-- Custom red/cream pieces still queued for the polish milestone (M5). Settings page exists (M3) but only holds progress data controls; themes/pieces/sound slot in there.
-- oxlint emits two pre-existing `react(refs)` warnings in `TestRunner`'s `squareStyles` memo (reads `gameRef` during render). Harmless with the current remount-per-position design; tidy during M5 if touching that code.
+- Sync writes are debounced 2.5s and skip events fired by sync's own saves — otherwise a signed-in session syncs itself in a loop. Keep that guard if touching `engine.ts`.
+- Magic links use the PKCE flow deliberately: the implicit flow returns tokens in the URL fragment, which HashRouter rewrites before supabase-js can read them.
+- `games` is keyed `(user_id, id)` — game ids are deterministic per-date strings and would collide across accounts on a bare id.
+- "Reset progress" while signed in clears the server rows first, else the next sync restores everything; journal JSON import reconciles tombstones the same way.
 
-**Awaiting Nico:** Supabase credentials for Milestone 6 (a personal access token `sbp_...`, or a project URL + anon key). Everything else can proceed.
+**Awaiting Nico:** the two browser steps at the top — the Pages source click, and the Supabase project + its URL/anon key. Nothing else is blocked.
 
 ## Milestones (from spec §9)
 
@@ -56,11 +70,13 @@
 3. ~~**Progress + SRS** — localStorage, Anki SM-2, review queue (principle cards + positions), export/import.~~ ✅ 2026-08-30
 4. ~~**Tier 2 authored; Tiers 3–6 scaffolded.**~~ ✅ 2026-08-30
 5. ~~**Polish + deploy** — mobile pass, custom red/cream pieces, settings, "Show solution" button, GitHub Pages workflow, PWA manifest, Playwright smoke tests.~~ ✅ 2026-08-30
-6. **Sync** — Supabase magic-link auth, local-first merge (spec §11). ◐ code complete 2026-08-30; needs Nico's Supabase project + live verification.
+6. **Sync** — Supabase magic-link auth, local-first merge (spec §11). ◐ code complete + review-hardened 2026-08-30; needs Nico's Supabase project + live verification.
 7. ~~**Journal** — game entry/viewer/list/export (addendum).~~ ✅ 2026-08-30
 8. ~~**Journal ↔ trainer links.**~~ ✅ 2026-08-30
 
 ## History
+
+- **2026-08-30 (night)** — PRs #4 and #5 merged to `main`; adversarial code review of the sync layer found and fixed 6 real defects (games pk collision across accounts, endless self-triggering sync loop, PKCE vs HashRouter magic links, shared-browser account leakage, reset/import resurrection, a re-entrancy race). First Pages deploy failed only at the "create Pages site" step (needs repo-admin, not grantable to a workflow token); a `gh-pages` branch snapshot was pushed as a fallback. `docs/SYNC_SETUP.md` added.
 
 - **2026-08-30 (late-4)** — Milestone 6 code-complete: full sync engine (schema, pure merge with tests, background push/pull, tombstoned deletes, magic-link account UI). Awaiting a real Supabase project to go live.
 - **2026-08-30 (late-3)** — Milestones 7+8 built: the OTB game journal (entry via board or sanitized PGN paste, viewer with inline per-move notes, filterable list with descriptive tallies, JSON+PGN export, drafts, smart defaults, recall-over-retyping autocomplete) and the journal↔trainer links (linked lessons on games with endgame-type suggestions; "My games" on lessons). Rating tags stripped on import per the addendum's hard rule; caught and fixed a chess.js placeholder-header bug ("????.??.??" dates).
