@@ -15,9 +15,11 @@ Keys live in two places, never in git: `.env` locally (gitignored) and GitHub Ac
 
 ### The one thing left
 
-**Finish the magic-link round trip.** A fresh link was sent to nico.mcdonald@outlook.com from the *deployed site* in Chrome at 19:52 on 2026-08-31 (the earlier 11:08 one expired — Supabase links last an hour). Click it **in Chrome**: the PKCE code verifier lives in the localStorage of the browser that requested the link, so another browser fails with "both auth code and code verifier should be non-empty", and it must be the same origin it was requested from. Free-tier email allows roughly one link per 30s with a small hourly cap, so don't spam re-requests.
+**Nico creates the sync account.** On https://nico101rsa.github.io/endgame-trainer/#/settings → Account & sync: type the email and a password, press **Create account**. No email is sent and nothing needs clicking. Then do the same on the phone with **Sign in**, and the two devices share one review schedule.
 
-Once signed in, live-verify what only pure-merge unit tests have covered: solve a position on device A, sign in on device B and confirm it appears; delete a journal game on one device and confirm it stays deleted on the other.
+Right after that, close the door: Supabase → Authentication → Sign In / Providers → turn **"Allow new users to sign up"** off, so the public site can't accept strangers. Also live-verify what only unit tests have covered — solve a position on one device, sign in on the other and confirm it appears; delete a journal game on one and confirm it stays deleted on the other.
+
+**Why not magic links (decided 2026-08-31).** Outlook / Microsoft Defender SafeLinks fetches every URL in an incoming message, spending the one-time sign-in link before the human clicks it. The auth log: link mailed 19:51:12, a successful `/verify` at 19:52:32 that nobody triggered, then `403: Email link is invalid or has expired` on the real click at 19:54:25. Two links, two "expired", same cause. A six-digit code would also work but Supabase only unlocks the email template once a custom SMTP provider is configured (Resend, domain `pbimodel.com` is verified) — more setup for the same result. Email confirmation is switched off on the project so sign-up touches no mailbox at all. If magic links are ever wanted back, the SafeLinks problem returns with them.
 
 ### Running it on a Mac
 
