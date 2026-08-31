@@ -8,10 +8,16 @@ Supabase project `endgame-trainer`, ref `fpbpkgjzomaltdilrxiw`, org `nico101rsa'
 
 Keys live in two places, never in git: `.env` locally (gitignored) and GitHub Actions secrets `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`, which `deploy.yml` feeds into the Pages build.
 
-### The two things left — both need Nico
+### Live
 
-1. **Decide whether the repo goes public.** GitHub Pages refuses to enable on a private repo without a paid plan: `settings/pages` currently shows only "Upgrade or make this repository public to enable Pages". So public repo → free Pages → deployed app. The IP position is written up in `NOTICE.md` (MIT code, CC BY-NC content, originality + no-affiliation statement); the short version is that endgame theory is public knowledge, no Silman text or position is reproduced, and the spec's "Original content" rule (§2) already binds every lesson. Once the repo is public: `gh api -X POST repos/nico101rsa/endgame-trainer/pages -f build_type=workflow`, then re-run the Deploy workflow. Delete the stale `gh-pages` branch after.
-2. **Finish the magic-link round trip.** A sign-in link was sent to nico.mcdonald@outlook.com from Chrome at 11:08 on 2026-08-31; the auth user row exists and reads "waiting for verification". Click it **in Chrome** — the PKCE code verifier lives in the localStorage of whichever browser requested the link, so clicking it in a different browser fails with "both auth code and code verifier should be non-empty". Then live-verify what only unit tests have covered: solve a position on device A, sign in on device B and watch it appear; delete a journal game on one device and confirm it stays deleted on the other. Free-tier email is rate-limited (~1 link per 30s, small hourly cap) — if a link expires, wait before re-requesting.
+- **Deployed:** https://nico101rsa.github.io/endgame-trainer/ — repo public, Pages source = GitHub Actions, `deploy.yml` run 33379549842 green on 2026-08-31. The deployed bundle carries the Supabase project ref, so sync is on in production. The stale `gh-pages` snapshot branch is deleted; `main` is the only branch.
+- **Public repo:** history was scanned before flipping visibility — no keys ever committed, only placeholder `.env.example` files. Licensing is in `LICENSE` (MIT, code) and `NOTICE.md` (CC BY-NC for `/content`, originality + no-affiliation statement).
+
+### The one thing left
+
+**Finish the magic-link round trip.** A fresh link was sent to nico.mcdonald@outlook.com from the *deployed site* in Chrome at 19:52 on 2026-08-31 (the earlier 11:08 one expired — Supabase links last an hour). Click it **in Chrome**: the PKCE code verifier lives in the localStorage of the browser that requested the link, so another browser fails with "both auth code and code verifier should be non-empty", and it must be the same origin it was requested from. Free-tier email allows roughly one link per 30s with a small hourly cap, so don't spam re-requests.
+
+Once signed in, live-verify what only pure-merge unit tests have covered: solve a position on device A, sign in on device B and confirm it appears; delete a journal game on one device and confirm it stays deleted on the other.
 
 ### Running it on a Mac
 
