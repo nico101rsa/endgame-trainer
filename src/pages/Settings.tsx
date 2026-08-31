@@ -37,16 +37,51 @@ export function Settings() {
   const account = useSyncAccount()
   const [message, setMessage] = useState<{ tone: 'ok' | 'error'; text: string } | null>(null)
   const [signInEmail, setSignInEmail] = useState('')
+  const [signInPassword, setSignInPassword] = useState('')
   const [accountMessage, setAccountMessage] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  async function sendMagicLink() {
-    if (!supabase || !signInEmail.trim()) return
-    const { error } = await supabase.auth.signInWithOtp({
+  // Email + password, not a magic link. Corporate mail scanners (Outlook /
+  // Microsoft Defender SafeLinks) fetch every URL in an incoming message,
+  // which spends a one-time sign-in link before the human ever clicks it. The
+  // auth log showed exactly that: link mailed 19:51:12, a successful /verify
+  // at 19:52:32 from nobody, then 403 "Email link is invalid or has expired"
+  // on the real click at 19:54:25. A password involves no email at all.
+  // Email confirmation is switched off on the project to match.
+  async function signIn() {
+    if (!supabase || !signInEmail.trim() || !signInPassword) return
+    setAccountMessage('Signing in…')
+    const { error } = await supabase.auth.signInWithPassword({
       email: signInEmail.trim(),
-      options: { emailRedirectTo: window.location.origin + window.location.pathname },
+      password: signInPassword,
     })
-    setAccountMessage(error ? error.message : 'Magic link sent — check your email on this device.')
+    setSignInPassword('')
+    setAccountMessage(
+      error
+        ? error.message === 'Invalid login credentials'
+          ? 'Wrong email or password. First time on this device? Use Create account.'
+          : error.message
+        : 'Signed in — syncing.',
+    )
+  }
+
+  async function createAccount() {
+    if (!supabase || !signInEmail.trim() || !signInPassword) return
+    if (signInPassword.length < 8) {
+      setAccountMessage('Use at least 8 characters.')
+      return
+    }
+    setAccountMessage('Creating account…')
+    const { error } = await supabase.auth.signUp({
+      email: signInEmail.trim(),
+      password: signInPassword,
+    })
+    setSignInPassword('')
+    setAccountMessage(
+      error
+        ? error.message
+        : 'Account created and signed in — this device will sync from now on.',
+    )
   }
 
   function download() {
@@ -190,24 +225,43 @@ export function Settings() {
           </>
         ) : (
           <>
+            <input
+              type="email"
+              autoComplete="username"
+              value={signInEmail}
+              onChange={(e) => setSignInEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="min-h-[48px] w-full border-[3px] border-ink bg-panel px-3 text-[14px] font-bold placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-red"
+            />
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={signInPassword}
+              onChange={(e) => setSignInPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') void signIn()
+              }}
+              placeholder="Password"
+              className="min-h-[48px] w-full border-[3px] border-ink bg-panel px-3 text-[14px] font-bold placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-red"
+            />
             <div className="flex gap-2">
-              <input
-                type="email"
-                value={signInEmail}
-                onChange={(e) => setSignInEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="min-h-[48px] min-w-0 flex-1 border-[3px] border-ink bg-panel px-3 text-[14px] font-bold placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-red"
-              />
               <button
-                onClick={() => void sendMagicLink()}
-                className="min-h-[48px] border-[3px] border-ink px-3 text-[12px] font-extrabold uppercase tracking-wide"
+                onClick={() => void signIn()}
+                className="min-h-[48px] flex-1 bg-ink text-[12px] font-extrabold uppercase tracking-wide text-cream shadow-[4px_4px_0_#c53024]"
               >
-                Send link
+                Sign in
+              </button>
+              <button
+                onClick={() => void createAccount()}
+                className="min-h-[48px] flex-1 border-[3px] border-ink text-[12px] font-extrabold uppercase tracking-wide"
+              >
+                Create account
               </button>
             </div>
             <div className="text-[12px] font-medium text-muted">
-              Sign in with a magic link — no passwords. Progress and journal sync
-              across your devices; everything keeps working offline.
+              Progress and journal sync across your devices; everything keeps
+              working offline. Create the account once, then sign in with the
+              same email and password on every other device.
             </div>
           </>
         )}
