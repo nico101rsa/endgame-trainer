@@ -2,17 +2,16 @@
 
 ## Next session (Session Handoff)
 
-**State: every milestone (1–8) is built and merged to `main`.** Working tree clean, 47/47 vitest, `npm run validate` clean (13 lessons / 44 test positions / 117 ids), `npm run build` clean, `npm run e2e` 14/14 against the production build, CI green on `main`. The app is feature-complete per the spec + addendum: six tiers (Tier 1–2 fully authored, 3–6 scaffolded), SM-2 review queue, settings (themes / poster pieces / sound / export-import-reset), the OTB game journal with trainer links, and a sync engine that ships disabled until Supabase keys exist.
+**State: every milestone (1–8) built and merged to `main`, and the Supabase project is live** (PR #7). Working tree clean, 47/47 vitest, `npm run validate` clean (13 lessons / 44 test positions / 117 ids), CI green on `main`.
 
-### The only two things left — both need a human at a browser
+Supabase project `endgame-trainer`, ref `fpbpkgjzomaltdilrxiw`, org `nico101rsa's Org`, free tier, region **ap-northeast-1 (Tokyo)** — the "Asia-Pacific" default resolved to Tokyo, not Sydney. Harmless for a few KB of sync per session; only fixable by recreating the project. `supabase/schema.sql` is applied, `games` corrected to the composite `(user_id, id)` key. Auth URLs set: Site URL `https://nico101rsa.github.io/endgame-trainer/`, redirects for that plus `http://localhost:5173/**`. Verified live: anonymous reads return `[]`, an anonymous insert is rejected with `42501 new row violates row-level security policy`.
 
-1. **Turn on GitHub Pages (one click).** https://github.com/nico101rsa/endgame-trainer/settings/pages → **Source: GitHub Actions**. Then re-run the "Deploy to GitHub Pages" workflow (Actions tab → Run workflow, or push any commit to `main`). The site lands at https://nico101rsa.github.io/endgame-trainer/.
-   *Why not automated:* creating the Pages site needs repo-admin rights that GitHub never grants a workflow token — the first deploy failed with `Create Pages site failed: Resource not accessible by integration`. Everything else in the deploy is automatic and already proven (build, artifact upload).
-   *Fallback that works this second:* the `gh-pages` branch already holds a built snapshot; setting Source = "Deploy from a branch → gh-pages" serves it immediately. It's a manual snapshot, not auto-updating — prefer the Actions source and delete the `gh-pages` branch once it's live.
+Keys live in two places, never in git: `.env` locally (gitignored) and GitHub Actions secrets `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`, which `deploy.yml` feeds into the Pages build.
 
-2. **Create the Supabase project and hand over two strings.** Follow `docs/SYNC_SETUP.md` (5 minutes: create project → paste `supabase/schema.sql` in the SQL editor → set auth Site/Redirect URLs → copy the **Project URL** and **anon key**). Put them in `.env` locally, and in `.env.production` for the deployed build; both are public-safe by design (RLS protects the rows) — the `service_role` key is never used here.
-   *Why not automated:* the cloud session's egress proxy blocks `api.supabase.com` and `*.supabase.co` outright, so no token would have helped.
-   *Then:* the sync engine has only ever been exercised by pure-merge unit tests. Live-verify: magic-link sign-in, solve a position on device A, sign in on device B and confirm it appears; delete a journal game on one device and confirm it doesn't resurrect on the other.
+### The two things left — both need Nico
+
+1. **Decide whether the repo goes public.** GitHub Pages refuses to enable on a private repo without a paid plan: `settings/pages` currently shows only "Upgrade or make this repository public to enable Pages". So public repo → free Pages → deployed app. The IP position is written up in `NOTICE.md` (MIT code, CC BY-NC content, originality + no-affiliation statement); the short version is that endgame theory is public knowledge, no Silman text or position is reproduced, and the spec's "Original content" rule (§2) already binds every lesson. Once the repo is public: `gh api -X POST repos/nico101rsa/endgame-trainer/pages -f build_type=workflow`, then re-run the Deploy workflow. Delete the stale `gh-pages` branch after.
+2. **Finish the magic-link round trip.** A sign-in link was sent to nico.mcdonald@outlook.com from Chrome at 11:08 on 2026-08-31; the auth user row exists and reads "waiting for verification". Click it **in Chrome** — the PKCE code verifier lives in the localStorage of whichever browser requested the link, so clicking it in a different browser fails with "both auth code and code verifier should be non-empty". Then live-verify what only unit tests have covered: solve a position on device A, sign in on device B and watch it appear; delete a journal game on one device and confirm it stays deleted on the other. Free-tier email is rate-limited (~1 link per 30s, small hourly cap) — if a link expires, wait before re-requesting.
 
 ### Running it on a Mac
 
